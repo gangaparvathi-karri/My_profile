@@ -1,10 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Web Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Welcome Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            width: 320px;
+            text-align: center;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #welcomePage {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is my first webpage.</p>
+
+    <!-- Login Page -->
+    <div class="container" id="loginPage">
+        <h2>Login</h2>
+
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Welcome Page -->
+    <div class="container" id="welcomePage">
+        <h2>Welcome!</h2>
+        <p id="welcomeMessage"></p>
+
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function login() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            if (username && password) {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("welcomePage").style.display = "block";
+                document.getElementById("welcomeMessage").innerText =
+                    "Hello, " + username + "! You have successfully logged in.";
+            } else {
+                alert("Please enter username and password.");
+            }
+        }
+
+        function logout() {
+            document.getElementById("welcomePage").style.display = "none";
+            document.getElementById("loginPage").style.display = "block";
+
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+    </script>
+
 </body>
 </html>
