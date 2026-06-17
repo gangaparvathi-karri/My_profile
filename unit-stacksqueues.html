@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stacks &amp; Queues — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 03</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 03</span>
+    <h1>Stacks &amp; Queues</h1>
+    <p class="lede">Both restrict how you can add and remove elements, and that restriction
+      is the whole point — it gives you a predictable order of access for free.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A stack diagram showing last-in-first-out, and a queue diagram showing first-in-first-out">
+      <text x="60" y="20" fill="#2DD4BF" font-family="Space Grotesk" font-size="15" font-weight="600">Stack (LIFO)</text>
+      <g font-family="JetBrains Mono" font-size="13" fill="#EAF2F5" text-anchor="middle">
+        <rect x="30" y="100" width="120" height="30" fill="#1B344F" stroke="#25425F"/>
+        <rect x="30" y="68" width="120" height="30" fill="#1B344F" stroke="#25425F"/>
+        <rect x="30" y="36" width="120" height="30" fill="#1B344F" stroke="#2DD4BF"/>
+        <text x="90" y="56">top → C</text>
+        <text x="90" y="88">B</text>
+        <text x="90" y="120">A</text>
+      </g>
+      <text x="60" y="148" fill="#7C93A8" font-family="JetBrains Mono" font-size="11">push/pop only at the top</text>
+
+      <text x="400" y="20" fill="#F2A93B" font-family="Space Grotesk" font-size="15" font-weight="600">Queue (FIFO)</text>
+      <g font-family="JetBrains Mono" font-size="13" fill="#EAF2F5" text-anchor="middle">
+        <rect x="320" y="60" width="50" height="40" fill="#1B344F" stroke="#F2A93B"/>
+        <rect x="380" y="60" width="50" height="40" fill="#1B344F" stroke="#25425F"/>
+        <rect x="440" y="60" width="50" height="40" fill="#1B344F" stroke="#25425F"/>
+        <text x="345" y="84">A</text>
+        <text x="405" y="84">B</text>
+        <text x="465" y="84">C</text>
+      </g>
+      <text x="345" y="112" fill="#7C93A8" font-family="JetBrains Mono" font-size="11">front</text>
+      <text x="465" y="112" fill="#7C93A8" font-family="JetBrains Mono" font-size="11">rear</text>
+      <text x="320" y="135" fill="#7C93A8" font-family="JetBrains Mono" font-size="11">enqueue at rear, dequeue from front</text>
+    </svg>
+    <p class="diagram-caption">// a stack reverses arrival order, a queue preserves it</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What they are</h2>
+    <p>A stack only lets you add or remove from one end — the "top" — so the last thing
+      you added is the first thing you remove (Last In, First Out). A queue lets you add at
+      one end (the rear) and remove from the other (the front), so the first thing added is
+      the first thing removed (First In, First Out).</p>
+
+    <h2>Why they're useful</h2>
+    <ul>
+      <li><strong>Stacks</strong> model "undo" history, function call tracking (the call stack),
+        and matching brackets or parentheses in an expression.</li>
+      <li><strong>Queues</strong> model task scheduling, handling requests in the order they arrive,
+        and breadth-first traversal of trees and graphs.</li>
+    </ul>
+
+    <h2>Where they struggle</h2>
+    <ul>
+      <li>Both deliberately restrict access — you can't reach into the middle without breaking
+        the abstraction, so they're the wrong tool when you need arbitrary access.</li>
+      <li>A naive queue built on an array can be slow to dequeue unless implemented carefully
+        (e.g. with a circular buffer or a linked list).</li>
+    </ul>
+
+    <h3>Time complexity</h3>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Stack</th><th>Queue</th></tr>
+      <tr><td>Insert (push / enqueue)</td><td>O(1)</td><td>O(1)</td></tr>
+      <tr><td>Remove (pop / dequeue)</td><td>O(1)</td><td>O(1)</td></tr>
+      <tr><td>Access middle element</td><td>Not supported</td><td>Not supported</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-linkedlists.html">← Linked Lists</a>
+    <a href="unit-trees.html">Next: Trees &amp; BSTs →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "If you push A, then B, then C onto a stack, what comes off first when you pop?",
+      choices: ["A", "B", "C", "It depends on size"],
+      correct: 2,
+      explain: "Stacks are Last In, First Out — C was added last, so it's removed first."
+    },
+    {
+      q: "Which real-world scenario best matches a queue's behavior?",
+      choices: [
+        "Undoing your last action in a text editor",
+        "People waiting in line at a ticket counter",
+        "A stack of plates where you take from the top",
+        "Browser back button history"
+      ],
+      correct: 1,
+      explain: "A line at a counter is First In, First Out — whoever arrived first gets served first, exactly like a queue."
+    },
+    {
+      q: "What do stacks and queues have in common?",
+      choices: [
+        "Both allow direct access to any middle element",
+        "Both restrict where you can add/remove elements, giving predictable ordering",
+        "Both require sorted data",
+        "Neither supports insertion"
+      ],
+      correct: 1,
+      explain: "Their shared trait is restricting access to specific ends, which is exactly what produces their useful, predictable ordering."
+    }
+  ]);
+</script>
+
+</body>
+</html>

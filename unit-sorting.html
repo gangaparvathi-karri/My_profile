@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorting Techniques — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 07</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 07</span>
+    <h1>Sorting Techniques</h1>
+    <p class="lede">Putting data in order sounds simple, but the method you choose can mean
+      the difference between milliseconds and minutes once the dataset gets large.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bars of increasing height representing data being sorted from unordered to ordered">
+      <g font-family="JetBrains Mono" font-size="12" fill="#7C93A8">
+        <text x="20" y="20">unsorted</text>
+        <text x="380" y="20">sorted</text>
+      </g>
+      <g>
+        <rect x="20" y="70" width="24" height="40" fill="#1B344F" stroke="#F2A93B"/>
+        <rect x="54" y="40" width="24" height="70" fill="#1B344F" stroke="#F2A93B"/>
+        <rect x="88" y="90" width="24" height="20" fill="#1B344F" stroke="#F2A93B"/>
+        <rect x="122" y="55" width="24" height="55" fill="#1B344F" stroke="#F2A93B"/>
+      </g>
+      <text x="170" y="95" fill="#2DD4BF" font-family="Space Grotesk" font-size="20">→</text>
+      <g>
+        <rect x="220" y="90" width="24" height="20" fill="#1B344F" stroke="#2DD4BF"/>
+        <rect x="254" y="70" width="24" height="40" fill="#1B344F" stroke="#2DD4BF"/>
+        <rect x="288" y="55" width="24" height="55" fill="#1B344F" stroke="#2DD4BF"/>
+        <rect x="322" y="40" width="24" height="70" fill="#1B344F" stroke="#2DD4BF"/>
+      </g>
+      <text x="20" y="135" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">same four values, rearranged into increasing order</text>
+    </svg>
+    <p class="diagram-caption">// different algorithms reach this same end state at very different speeds</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>Sorting rearranges a collection into a defined order, usually ascending or descending.
+      There's no single "best" algorithm — the right choice depends on the data size, whether
+      it's mostly sorted already, and whether you need to sort in place.</p>
+
+    <h2>Common approaches</h2>
+    <ul>
+      <li><strong>Bubble sort.</strong> Repeatedly swaps adjacent out-of-order pairs. Simple to
+        understand, but slow on anything but tiny inputs.</li>
+      <li><strong>Selection sort.</strong> Repeatedly finds the smallest remaining element and
+        moves it into place.</li>
+      <li><strong>Insertion sort.</strong> Builds the sorted section one element at a time —
+        fast when the data is already nearly sorted.</li>
+      <li><strong>Merge sort.</strong> Splits the data in half recursively, sorts each half,
+        then merges them — consistently fast, and stable.</li>
+      <li><strong>Quick sort.</strong> Picks a "pivot" and partitions data around it — usually
+        very fast in practice, though it has a slow worst case.</li>
+    </ul>
+
+    <h2>Where the simple ones struggle</h2>
+    <ul>
+      <li>Bubble, selection, and insertion sort all take O(n²) time in the worst case, which
+        becomes impractical once data grows into the thousands or millions.</li>
+      <li>Quick sort's worst case (O(n²)) can show up with poorly chosen pivots, though good
+        implementations guard against this.</li>
+    </ul>
+
+    <h3>Time complexity</h3>
+    <table class="complexity-table">
+      <tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+      <tr><td>Bubble sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td></tr>
+      <tr><td>Insertion sort</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td></tr>
+      <tr><td>Merge sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td></tr>
+      <tr><td>Quick sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-hashing.html">← Hashing</a>
+    <a href="unit-searching.html">Next: Searching Techniques →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "Which sorting algorithm is generally best suited for data that's already nearly sorted?",
+      choices: ["Bubble sort", "Insertion sort", "Merge sort", "They all perform identically"],
+      correct: 1,
+      explain: "Insertion sort does very little work when elements are already close to their correct position, making it efficient on nearly-sorted input."
+    },
+    {
+      q: "Why is merge sort often preferred over bubble sort for large datasets?",
+      choices: [
+        "Merge sort uses less memory in every case",
+        "Merge sort runs in O(n log n) time consistently, while bubble sort degrades to O(n²)",
+        "Bubble sort can't handle large datasets at all",
+        "There's no real difference"
+      ],
+      correct: 1,
+      explain: "Merge sort's divide-and-conquer approach keeps it at O(n log n) even in the worst case, while bubble sort's repeated adjacent swaps make it O(n²)."
+    },
+    {
+      q: "What does quick sort's worst-case time complexity depend heavily on?",
+      choices: [
+        "The programming language used",
+        "How well the pivot element is chosen",
+        "Whether the array is an object or primitive type",
+        "The amount of available RAM"
+      ],
+      correct: 1,
+      explain: "A poorly chosen pivot (e.g. always picking the smallest or largest element) leads to unbalanced partitions and O(n²) behavior."
+    }
+  ]);
+</script>
+
+</body>
+</html>

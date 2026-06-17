@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphs — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 05</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 05</span>
+    <h1>Graphs</h1>
+    <p class="lede">Where a tree forces strict hierarchy, a graph lets any node connect to
+      any other. That flexibility is exactly what's needed to model real networks: roads,
+      friendships, dependencies, the internet itself.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A graph with five nodes connected by edges, some forming cycles, unlike a tree">
+      <g stroke="#25425F" stroke-width="2">
+        <line x1="80" y1="40" x2="200" y2="30"/>
+        <line x1="80" y1="40" x2="60" y2="150"/>
+        <line x1="200" y1="30" x2="330" y2="60"/>
+        <line x1="200" y1="30" x2="60" y2="150"/>
+        <line x1="330" y1="60" x2="280" y2="170"/>
+        <line x1="60" y1="150" x2="280" y2="170"/>
+      </g>
+      <g font-family="JetBrains Mono" font-size="14" fill="#EAF2F5" text-anchor="middle">
+        <circle cx="80" cy="40" r="20" fill="#1B344F" stroke="#2DD4BF" stroke-width="2"/>
+        <text x="80" y="46">A</text>
+
+        <circle cx="200" cy="30" r="20" fill="#1B344F" stroke="#25425F"/>
+        <text x="200" y="36">B</text>
+
+        <circle cx="330" cy="60" r="20" fill="#1B344F" stroke="#25425F"/>
+        <text x="330" y="66">C</text>
+
+        <circle cx="60" cy="150" r="20" fill="#1B344F" stroke="#25425F"/>
+        <text x="60" y="156">D</text>
+
+        <circle cx="280" cy="170" r="20" fill="#1B344F" stroke="#F2A93B" stroke-width="2"/>
+        <text x="280" y="176">E</text>
+      </g>
+      <text x="20" y="205" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">A–B–D–A forms a cycle — something a tree can never have</text>
+    </svg>
+    <p class="diagram-caption">// nodes (vertices) connected by edges, with no single root and no restriction on connections</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>A graph is a set of nodes (often called vertices) connected by edges. Edges can be
+      directed (one-way, like a "follows" relationship) or undirected (two-way, like a road),
+      and can optionally carry a weight (like distance or cost). Unlike a tree, a graph can
+      have cycles and no node needs to be the "root."</p>
+
+    <h2>Why it's useful</h2>
+    <ul>
+      <li><strong>Models real networks directly.</strong> Maps, social networks, flight routes,
+        and dependency chains between tasks are all naturally graphs.</li>
+      <li><strong>Rich traversal algorithms.</strong> Breadth-first search finds the shortest
+        path in unweighted graphs; depth-first search explores as far as possible before
+        backtracking; Dijkstra's algorithm finds shortest paths when edges have weights.</li>
+    </ul>
+
+    <h2>Where it struggles</h2>
+    <ul>
+      <li><strong>Can be memory-heavy.</strong> A densely connected graph with many edges can
+        require significant storage, especially with an adjacency matrix representation.</li>
+      <li><strong>Cycles complicate traversal.</strong> Algorithms must track visited nodes to
+        avoid looping forever.</li>
+    </ul>
+
+    <h3>Time complexity (adjacency list representation)</h3>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Time</th></tr>
+      <tr><td>Add vertex</td><td>O(1)</td></tr>
+      <tr><td>Add edge</td><td>O(1)</td></tr>
+      <tr><td>BFS / DFS traversal</td><td>O(V + E)</td></tr>
+      <tr><td>Check if edge exists</td><td>O(degree of vertex)</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-trees.html">← Trees &amp; BSTs</a>
+    <a href="unit-hashing.html">Next: Hashing →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "What can a graph have that a tree, by definition, cannot?",
+      choices: ["Nodes", "Edges", "Cycles", "A starting point"],
+      correct: 2,
+      explain: "Trees are acyclic by definition — a graph is free to loop back on itself, forming a cycle."
+    },
+    {
+      q: "Which is an example of a directed edge?",
+      choices: [
+        "A two-way road between two towns",
+        "A mutual friendship on a social network",
+        "One account 'following' another on social media",
+        "A symmetric distance measurement"
+      ],
+      correct: 2,
+      explain: "Following is one-directional — A following B doesn't mean B follows A — which is exactly what a directed edge represents."
+    },
+    {
+      q: "Why must traversal algorithms like BFS and DFS track visited nodes in a graph?",
+      choices: [
+        "To save memory",
+        "Because graphs can contain cycles, which could cause infinite loops otherwise",
+        "It's only needed for weighted graphs",
+        "It's not actually necessary"
+      ],
+      correct: 1,
+      explain: "Without tracking visited nodes, an algorithm could go around a cycle forever, never finishing the traversal."
+    }
+  ]);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrays &amp; Strings — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 01</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 01</span>
+    <h1>Arrays &amp; Strings</h1>
+    <p class="lede">The simplest way to hold many values: a fixed block of memory where every
+      item sits at a known distance from the start. Almost every other structure either
+      builds on this or exists to work around its limits.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An array of five boxes indexed 0 through 4, holding the values 4, 9, 2, 7, 1">
+      <text x="20" y="24" fill="#7C93A8" font-family="JetBrains Mono" font-size="13">index</text>
+      <text x="20" y="58" fill="#7C93A8" font-family="JetBrains Mono" font-size="13">value</text>
+      <g font-family="JetBrains Mono" font-size="14">
+        <text x="120" y="24" fill="#2DD4BF" text-anchor="middle">0</text>
+        <text x="200" y="24" fill="#2DD4BF" text-anchor="middle">1</text>
+        <text x="280" y="24" fill="#2DD4BF" text-anchor="middle">2</text>
+        <text x="360" y="24" fill="#2DD4BF" text-anchor="middle">3</text>
+        <text x="440" y="24" fill="#2DD4BF" text-anchor="middle">4</text>
+      </g>
+      <g>
+        <rect x="90" y="36" width="60" height="48" rx="6" fill="#1B344F" stroke="#25425F"/>
+        <rect x="170" y="36" width="60" height="48" rx="6" fill="#1B344F" stroke="#25425F"/>
+        <rect x="250" y="36" width="60" height="48" rx="6" fill="#1B344F" stroke="#25425F"/>
+        <rect x="330" y="36" width="60" height="48" rx="6" fill="#1B344F" stroke="#25425F"/>
+        <rect x="410" y="36" width="60" height="48" rx="6" fill="#1B344F" stroke="#25425F"/>
+      </g>
+      <g font-family="JetBrains Mono" font-size="16" fill="#EAF2F5" text-anchor="middle">
+        <text x="120" y="65">4</text>
+        <text x="200" y="65">9</text>
+        <text x="280" y="65">2</text>
+        <text x="360" y="65">7</text>
+        <text x="440" y="65">1</text>
+      </g>
+      <text x="20" y="118" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">arr[2] → 2, found instantly — no searching needed</text>
+    </svg>
+    <p class="diagram-caption">// elements sit contiguously in memory, so any index is a direct lookup</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>An array stores a fixed-size, ordered collection of elements in one continuous block
+      of memory. Because every element is the same size, the computer can calculate exactly
+      where any element sits just from its index, without having to look at anything else first.
+      A string is, under the hood, usually just an array of characters.</p>
+
+    <h2>Why it's useful</h2>
+    <ul>
+      <li><strong>Fast access by position.</strong> Reading <code>arr[5]</code> takes the same
+        time whether the array has 10 elements or 10 million.</li>
+      <li><strong>Memory efficient.</strong> No extra bookkeeping is needed for each element,
+        unlike structures that store pointers alongside data.</li>
+      <li><strong>Cache friendly.</strong> Because elements sit next to each other, scanning
+        through an array in order tends to be fast on real hardware.</li>
+    </ul>
+
+    <h2>Where it struggles</h2>
+    <ul>
+      <li><strong>Fixed size.</strong> Most array types can't grow once created — adding one
+        more element than fits means creating a new, bigger array and copying everything over.</li>
+      <li><strong>Costly middle insertions.</strong> Inserting or deleting in the middle means
+        shifting every element after it.</li>
+    </ul>
+
+    <h3>Time complexity</h3>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Time</th></tr>
+      <tr><td>Access by index</td><td>O(1)</td></tr>
+      <tr><td>Search (unsorted)</td><td>O(n)</td></tr>
+      <tr><td>Insert / delete at end</td><td>O(1)</td></tr>
+      <tr><td>Insert / delete in middle</td><td>O(n)</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="Datastructures.html">← All topics</a>
+    <a href="unit-linkedlists.html">Next: Linked Lists →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "Why can you access arr[7] just as fast as arr[0]?",
+      choices: [
+        "The computer searches from the start until it finds index 7",
+        "Elements are contiguous, so the address of any index is calculated directly",
+        "Arrays secretly store a pointer to every element",
+        "It's not actually faster, it just looks that way"
+      ],
+      correct: 1,
+      explain: "Since every element is the same size and stored back-to-back, the address of index 7 is just the start address plus 7 × element size — no searching required."
+    },
+    {
+      q: "What's the main drawback of inserting an element into the middle of an array?",
+      choices: [
+        "It's impossible to do",
+        "It requires shifting every element after the insertion point",
+        "It changes the array's data type",
+        "It only works for sorted arrays"
+      ],
+      correct: 1,
+      explain: "To make room for the new element, everything after it has to move over by one slot, which takes O(n) time in the worst case."
+    },
+    {
+      q: "A string in most languages is fundamentally:",
+      choices: [
+        "A linked list of words",
+        "A hash table of letters",
+        "An array of characters",
+        "A tree of syllables"
+      ],
+      correct: 2,
+      explain: "Strings are typically implemented as arrays (or array-like structures) of individual characters."
+    }
+  ]);
+</script>
+
+</body>
+</html>

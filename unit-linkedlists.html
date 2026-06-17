@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linked Lists — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 02</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 02</span>
+    <h1>Linked Lists</h1>
+    <p class="lede">Instead of one continuous memory block, each element lives in its own
+      node and points to the next one. Nothing needs to shift when you insert or remove —
+      you just rewire a couple of pointers.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four linked list nodes holding values 4, 9, 2, 7, each pointing to the next, ending in null">
+      <g font-family="JetBrains Mono" font-size="14" fill="#EAF2F5" text-anchor="middle">
+        <rect x="20" y="40" width="80" height="46" rx="8" fill="#1B344F" stroke="#2DD4BF"/>
+        <line x1="60" y1="40" x2="60" y2="86" stroke="#25425F"/>
+        <text x="40" y="68">4</text>
+        <text x="80" y="68" fill="#7C93A8">●→</text>
+
+        <rect x="150" y="40" width="80" height="46" rx="8" fill="#1B344F" stroke="#25425F"/>
+        <line x1="190" y1="40" x2="190" y2="86" stroke="#25425F"/>
+        <text x="170" y="68">9</text>
+        <text x="210" y="68" fill="#7C93A8">●→</text>
+
+        <rect x="280" y="40" width="80" height="46" rx="8" fill="#1B344F" stroke="#25425F"/>
+        <line x1="320" y1="40" x2="320" y2="86" stroke="#25425F"/>
+        <text x="300" y="68">2</text>
+        <text x="340" y="68" fill="#7C93A8">●→</text>
+
+        <rect x="410" y="40" width="80" height="46" rx="8" fill="#1B344F" stroke="#25425F"/>
+        <line x1="450" y1="40" x2="450" y2="86" stroke="#25425F"/>
+        <text x="430" y="68">7</text>
+        <text x="475" y="68" fill="#F2A93B">∅</text>
+      </g>
+      <line x1="100" y1="63" x2="150" y2="63" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="230" y1="63" x2="280" y2="63" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="360" y1="63" x2="410" y2="63" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrow)"/>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#2DD4BF"/>
+        </marker>
+      </defs>
+      <text x="20" y="115" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">head → 4 → 9 → 2 → 7 → null</text>
+    </svg>
+    <p class="diagram-caption">// each node only knows about the one after it</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>A linked list is a chain of nodes, where each node stores a value and a reference (pointer)
+      to the next node. The list itself only needs to remember where the chain starts (the "head").
+      There's no requirement that nodes sit next to each other in memory — they can be scattered anywhere.</p>
+
+    <h2>Why it's useful</h2>
+    <ul>
+      <li><strong>Cheap insertion and deletion.</strong> Adding or removing a node just means
+        updating a couple of pointers, no shifting required.</li>
+      <li><strong>Grows naturally.</strong> There's no fixed size to outgrow — you just add another node.</li>
+    </ul>
+
+    <h2>Where it struggles</h2>
+    <ul>
+      <li><strong>No direct indexing.</strong> To reach the 50th node, you have to walk through
+        the 49 before it — there's no shortcut.</li>
+      <li><strong>Extra memory per element.</strong> Each node needs space for its pointer(s),
+        on top of the actual data.</li>
+      <li><strong>Less cache-friendly.</strong> Since nodes can be scattered in memory, traversing
+        a linked list is typically slower in practice than scanning an array of the same size.</li>
+    </ul>
+
+    <h3>Time complexity</h3>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Time</th></tr>
+      <tr><td>Access by position</td><td>O(n)</td></tr>
+      <tr><td>Insert / delete at head</td><td>O(1)</td></tr>
+      <tr><td>Insert / delete at known node</td><td>O(1)</td></tr>
+      <tr><td>Search</td><td>O(n)</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-arrays.html">← Arrays &amp; Strings</a>
+    <a href="unit-stacksqueues.html">Next: Stacks &amp; Queues →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "Why can a linked list grow without needing to copy existing data, unlike a typical array?",
+      choices: [
+        "Linked lists store data in a single block like arrays do",
+        "Each node is independent and just gets linked in by updating a pointer",
+        "Linked lists pre-allocate extra space automatically",
+        "They can't grow either"
+      ],
+      correct: 1,
+      explain: "Since nodes don't need to be next to each other in memory, adding a new node just means pointing to it — no need to relocate anything that already exists."
+    },
+    {
+      q: "What's the cost of accessing the 100th element in a singly linked list?",
+      choices: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+      correct: 2,
+      explain: "There's no direct indexing — you must traverse from the head, following pointers one node at a time, which takes time proportional to the position."
+    },
+    {
+      q: "Compared to an array, a linked list trades away fast indexed access in exchange for:",
+      choices: [
+        "Lower memory usage",
+        "Cheap insertion and deletion without shifting elements",
+        "Guaranteed sorted order",
+        "Faster searching"
+      ],
+      correct: 1,
+      explain: "Linked lists give up O(1) indexed access but gain cheap structural changes, since nodes don't need to be shifted."
+    }
+  ]);
+</script>
+
+</body>
+</html>

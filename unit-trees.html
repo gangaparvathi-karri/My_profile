@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trees &amp; Binary Search Trees — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 04</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 04</span>
+    <h1>Trees &amp; Binary Search Trees</h1>
+    <p class="lede">A tree organizes data hierarchically: one root, and every other node
+      has exactly one parent. A binary search tree adds a rule about ordering that turns
+      that shape into a fast lookup structure.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A binary search tree with root 8, left child 3, right child 10, and further children 1, 6, 14">
+      <g stroke="#25425F" stroke-width="2">
+        <line x1="200" y1="40" x2="110" y2="100"/>
+        <line x1="200" y1="40" x2="290" y2="100"/>
+        <line x1="110" y1="100" x2="60" y2="160"/>
+        <line x1="110" y1="100" x2="150" y2="160"/>
+        <line x1="290" y1="100" x2="330" y2="160"/>
+      </g>
+      <g font-family="JetBrains Mono" font-size="15" fill="#EAF2F5" text-anchor="middle">
+        <circle cx="200" cy="40" r="22" fill="#1B344F" stroke="#2DD4BF" stroke-width="2"/>
+        <text x="200" y="46">8</text>
+
+        <circle cx="110" cy="100" r="20" fill="#1B344F" stroke="#25425F"/>
+        <text x="110" y="106">3</text>
+
+        <circle cx="290" cy="100" r="20" fill="#1B344F" stroke="#25425F"/>
+        <text x="290" y="106">10</text>
+
+        <circle cx="60" cy="160" r="18" fill="#1B344F" stroke="#25425F"/>
+        <text x="60" y="166">1</text>
+
+        <circle cx="150" cy="160" r="18" fill="#1B344F" stroke="#25425F"/>
+        <text x="150" y="166">6</text>
+
+        <circle cx="330" cy="160" r="18" fill="#1B344F" stroke="#25425F"/>
+        <text x="330" y="166">14</text>
+      </g>
+      <text x="20" y="205" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">left &lt; parent &lt; right, at every node</text>
+    </svg>
+    <p class="diagram-caption">// looking for 6: go left of 8, right of 3, found — two steps instead of scanning everything</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>A tree is a hierarchy of nodes starting from a single root, where each node can have
+      child nodes beneath it. A binary tree limits each node to at most two children. A binary
+      search tree (BST) adds one rule: for every node, everything in its left subtree is smaller,
+      and everything in its right subtree is larger. That rule is what makes searching fast.</p>
+
+    <h2>Why it's useful</h2>
+    <ul>
+      <li><strong>Fast search, insert, and delete.</strong> In a balanced BST, each comparison
+        eliminates roughly half the remaining nodes, similar to binary search.</li>
+      <li><strong>Natural for hierarchical data.</strong> File systems, organization charts,
+        and parsed expressions all have a tree-like shape already.</li>
+      <li><strong>Ordered traversal.</strong> Walking a BST in-order visits every value from
+        smallest to largest automatically.</li>
+    </ul>
+
+    <h2>Where it struggles</h2>
+    <ul>
+      <li><strong>Can become unbalanced.</strong> If values are inserted in sorted order, a
+        plain BST degrades into something resembling a linked list, losing its speed advantage.</li>
+      <li>Keeping it balanced requires extra structures like AVL trees or red-black trees,
+        which add implementation complexity.</li>
+    </ul>
+
+    <h3>Time complexity (balanced BST)</h3>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Average</th><th>Worst case (unbalanced)</th></tr>
+      <tr><td>Search</td><td>O(log n)</td><td>O(n)</td></tr>
+      <tr><td>Insert</td><td>O(log n)</td><td>O(n)</td></tr>
+      <tr><td>Delete</td><td>O(log n)</td><td>O(n)</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-stacksqueues.html">← Stacks &amp; Queues</a>
+    <a href="unit-graphs.html">Next: Graphs →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "In a binary search tree, where would a value smaller than the root always be found?",
+      choices: ["In the right subtree", "In the left subtree", "Always at the root's direct child", "Anywhere in the tree"],
+      correct: 1,
+      explain: "The BST ordering rule guarantees everything smaller than a node lives in its left subtree."
+    },
+    {
+      q: "What happens to a BST's performance if you insert already-sorted data (1, 2, 3, 4, 5...) one at a time?",
+      choices: [
+        "It stays perfectly balanced",
+        "It degrades into a structure like a linked list, losing the O(log n) advantage",
+        "It automatically rebalances itself",
+        "Nothing changes"
+      ],
+      correct: 1,
+      explain: "Each new value becomes the right child of the previous one, producing a long chain rather than a balanced shape — search then takes O(n)."
+    },
+    {
+      q: "What's the key difference between a generic tree and a binary search tree?",
+      choices: [
+        "A BST allows unlimited children per node",
+        "A BST enforces an ordering rule (left < parent < right) that enables fast search",
+        "A BST has no root",
+        "There is no difference"
+      ],
+      correct: 1,
+      explain: "Plenty of trees have no ordering rule at all — it's specifically the BST property that turns the shape into a searchable structure."
+    }
+  ]);
+</script>
+
+</body>
+</html>

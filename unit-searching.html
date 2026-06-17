@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Searching Techniques — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 08</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 08</span>
+    <h1>Searching Techniques</h1>
+    <p class="lede">Finding a value is one of the most common operations in computing —
+      and one decision, whether your data is sorted, completely changes how fast it can be.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Binary search narrowing in on a target value by repeatedly halving the search range">
+      <g font-family="JetBrains Mono" font-size="13" fill="#EAF2F5" text-anchor="middle">
+        <rect x="20" y="30" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <rect x="68" y="30" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <rect x="116" y="30" width="48" height="34" fill="#1B344F" stroke="#2DD4BF" stroke-width="2"/>
+        <rect x="164" y="30" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <rect x="212" y="30" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <rect x="260" y="30" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <rect x="308" y="30" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <text x="44" y="52">3</text><text x="92" y="52">9</text><text x="140" y="52">14</text>
+        <text x="188" y="52">22</text><text x="236" y="52">31</text><text x="284" y="52">40</text><text x="332" y="52">55</text>
+      </g>
+      <text x="140" y="22" fill="#F2A93B" font-family="JetBrains Mono" font-size="12" text-anchor="middle">mid</text>
+      <text x="20" y="100" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">looking for 31: check mid (14) → too small → search right half only</text>
+      <g font-family="JetBrains Mono" font-size="13" fill="#EAF2F5" text-anchor="middle">
+        <rect x="212" y="115" width="48" height="34" fill="#1B344F" stroke="#2DD4BF" stroke-width="2"/>
+        <rect x="260" y="115" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <rect x="308" y="115" width="48" height="34" fill="#1B344F" stroke="#25425F"/>
+        <text x="236" y="137">22</text><text x="284" y="137">31</text><text x="332" y="137">40</text>
+      </g>
+    </svg>
+    <p class="diagram-caption">// each comparison eliminates half of what's left to check</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>Searching means locating a target value within a collection. The two foundational
+      approaches are linear search, which checks elements one by one, and binary search,
+      which repeatedly halves the search space — but binary search only works on sorted data.</p>
+
+    <h2>The two core approaches</h2>
+    <ul>
+      <li><strong>Linear search.</strong> Check every element in order until you find a match
+        or reach the end. Works on any collection, sorted or not, but slow for large datasets.</li>
+      <li><strong>Binary search.</strong> Compare the target to the middle element; if it's
+        smaller, search the left half, if larger, search the right half; repeat. Requires
+        sorted data, but is dramatically faster.</li>
+    </ul>
+
+    <h2>Where each struggles</h2>
+    <ul>
+      <li>Linear search doesn't scale — doubling the data roughly doubles the worst-case time.</li>
+      <li>Binary search needs sorted data to begin with, and keeping data sorted as it changes
+        has its own cost.</li>
+      <li>Neither approach is ideal for "lookup by exact key" patterns where a hash table would
+        do better — searching is most relevant when you need to check membership, find a position,
+        or the data structure doesn't support hashing well (e.g. range queries on sorted data).</li>
+    </ul>
+
+    <h3>Time complexity</h3>
+    <table class="complexity-table">
+      <tr><th>Algorithm</th><th>Best</th><th>Worst</th><th>Requires sorted data?</th></tr>
+      <tr><td>Linear search</td><td>O(1)</td><td>O(n)</td><td>No</td></tr>
+      <tr><td>Binary search</td><td>O(1)</td><td>O(log n)</td><td>Yes</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-sorting.html">← Sorting Techniques</a>
+    <a href="Datastructures.html">All topics →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "What's the essential requirement for binary search to work correctly?",
+      choices: ["The data must be in a linked list", "The data must already be sorted", "The data must contain unique values only", "The data must be numeric"],
+      correct: 1,
+      explain: "Binary search relies on comparing against a midpoint and discarding half the range — that logic only holds if the data is sorted."
+    },
+    {
+      q: "Searching a sorted array of 1,000,000 elements with binary search takes roughly how many comparisons in the worst case?",
+      choices: ["About 1,000,000", "About 1,000", "About 20", "Exactly 2"],
+      correct: 2,
+      explain: "Binary search is O(log n); log2(1,000,000) is about 20, so roughly 20 comparisons are needed in the worst case."
+    },
+    {
+      q: "When is linear search still a reasonable choice over binary search?",
+      choices: [
+        "When the data is unsorted and sorting it isn't worth the cost for a one-off search",
+        "When the dataset is enormous and sorted",
+        "Never — binary search is always better",
+        "Only for searching strings"
+      ],
+      correct: 0,
+      explain: "If data is unsorted and you only need to search once, sorting first (which costs O(n log n)) just to binary search once isn't worth it — a single linear scan is simpler and just as fast for one-off use."
+    }
+  ]);
+</script>
+
+</body>
+</html>

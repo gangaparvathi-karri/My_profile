@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hashing — Data Structures</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="breadcrumb"><a href="Datastructures.html">Topics</a> / Unit 06</p>
+
+  <div class="unit-hero">
+    <span class="unit-tag">Unit 06</span>
+    <h1>Hashing</h1>
+    <p class="lede">What if you could jump straight to a value without searching or
+      traversing anything? A hash function turns a key into an address, getting you close
+      to that ideal.</p>
+  </div>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 520 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hash function mapping the key 'apple' to bucket index 3 in an array of buckets">
+      <g font-family="JetBrains Mono" font-size="14" fill="#EAF2F5">
+        <rect x="20" y="60" width="110" height="40" rx="8" fill="#1B344F" stroke="#2DD4BF" stroke-width="2"/>
+        <text x="35" y="85">"apple"</text>
+      </g>
+      <line x1="130" y1="80" x2="190" y2="80" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrowh)"/>
+      <rect x="190" y="55" width="100" height="50" rx="8" fill="#13263B" stroke="#F2A93B" stroke-width="2"/>
+      <text x="205" y="86" font-family="JetBrains Mono" font-size="13" fill="#F2A93B">hash(key)</text>
+      <line x1="290" y1="80" x2="350" y2="80" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrowh)"/>
+      <defs>
+        <marker id="arrowh" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#2DD4BF"/>
+        </marker>
+      </defs>
+      <g font-family="JetBrains Mono" font-size="13" fill="#EAF2F5" text-anchor="middle">
+        <rect x="350" y="20" width="50" height="30" fill="#1B344F" stroke="#25425F"/>
+        <rect x="350" y="50" width="50" height="30" fill="#1B344F" stroke="#25425F"/>
+        <rect x="350" y="80" width="50" height="30" fill="#1B344F" stroke="#2DD4BF" stroke-width="2"/>
+        <rect x="350" y="110" width="50" height="30" fill="#1B344F" stroke="#25425F"/>
+        <text x="375" y="100">apple</text>
+      </g>
+      <text x="20" y="155" fill="#7C93A8" font-family="JetBrains Mono" font-size="12">"apple" always hashes to the same bucket — no scanning needed to find it again</text>
+    </svg>
+    <p class="diagram-caption">// the hash function decides exactly where a key lives</p>
+  </div>
+
+  <section class="notes-section">
+    <h2>What it is</h2>
+    <p>A hash table stores key-value pairs. A hash function converts each key into a number
+      (an index), which tells the table exactly which "bucket" to store the value in. Looking
+      up a key later just means running it through the same hash function and going straight
+      to that bucket — no scanning required.</p>
+
+    <h2>Why it's useful</h2>
+    <ul>
+      <li><strong>Near-instant lookup, insert, and delete</strong> on average, regardless of
+        how many items are stored.</li>
+      <li><strong>Natural fit for "lookup by name" problems</strong> — dictionaries, caches,
+        counting word frequencies, checking for duplicates.</li>
+    </ul>
+
+    <h2>Where it struggles</h2>
+    <ul>
+      <li><strong>Collisions.</strong> Two different keys can hash to the same bucket. Handling
+        this (via chaining or open addressing) adds complexity and, in bad cases, slows things down.</li>
+      <li><strong>No natural ordering.</strong> Hash tables don't preserve any particular order
+        of keys, unlike a sorted array or BST.</li>
+      <li><strong>Memory overhead</strong> from needing extra space to keep collisions infrequent.</li>
+    </ul>
+
+    <h3>Time complexity</h3>
+    <table class="complexity-table">
+      <tr><th>Operation</th><th>Average</th><th>Worst case</th></tr>
+      <tr><td>Insert</td><td>O(1)</td><td>O(n)</td></tr>
+      <tr><td>Lookup</td><td>O(1)</td><td>O(n)</td></tr>
+      <tr><td>Delete</td><td>O(1)</td><td>O(n)</td></tr>
+    </table>
+  </section>
+
+  <section class="quiz-section">
+    <h2>Quick check</h2>
+    <div id="quiz-root"></div>
+  </section>
+
+  <div class="unit-nav">
+    <a href="unit-graphs.html">← Graphs</a>
+    <a href="unit-sorting.html">Next: Sorting Techniques →</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Data Structures Learning Portal</footer>
+
+<script src="quiz.js"></script>
+<script>
+  initQuiz('quiz-root', [
+    {
+      q: "What does a hash function actually do?",
+      choices: [
+        "Sorts the keys alphabetically",
+        "Converts a key into an index telling the table where to store/find it",
+        "Encrypts the data for security",
+        "Compresses the value to save space"
+      ],
+      correct: 1,
+      explain: "The hash function's job is purely to map a key to a bucket index, so lookup doesn't require scanning."
+    },
+    {
+      q: "What's a 'collision' in a hash table?",
+      choices: [
+        "When two keys hash to the same bucket",
+        "When the table runs out of memory",
+        "When a key is deleted",
+        "When the hash function returns a negative number"
+      ],
+      correct: 0,
+      explain: "Collisions happen when different keys produce the same hash index, requiring a strategy like chaining to store both."
+    },
+    {
+      q: "Why isn't a hash table a good choice when you need data in sorted order?",
+      choices: [
+        "Hash tables can't store sorted data at all",
+        "Hash tables don't preserve any particular ordering of keys",
+        "Hash tables are too slow for sorting",
+        "This isn't actually a limitation"
+      ],
+      correct: 1,
+      explain: "The position of a key in a hash table depends on its hash value, not its natural order, so iterating gives no meaningful sequence."
+    }
+  ]);
+</script>
+
+</body>
+</html>
