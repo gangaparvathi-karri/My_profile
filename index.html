@@ -7,7 +7,73 @@
 <link rel="stylesheet" href="styles.css">
 <style>
 
-  .profile-hero {
+:root{
+  --bg:#0b1120;
+  --panel:#111827;
+  --panel-2:#1f2937;
+  --text:#e5e7eb;
+  --text-dim:#94a3b8;
+  --teal:#2DD4BF;
+  --teal-dim:#134e4a;
+  --amber:#F2A93B;
+  --line:#334155;
+  --mono:'Consolas', monospace;
+  --display:'Segoe UI', sans-serif;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:var(--display);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(45,212,191,0.18), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(59,130,246,0.15), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(242,169,59,0.12), transparent 30%),
+    linear-gradient(135deg, #020617, #0f172a, #111827);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.bg-grid{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background-image:
+    linear-gradient(rgba(45,212,191,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,212,191,0.08) 1px, transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 15s linear infinite;
+}
+
+@keyframes gridMove{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
+
+.panel,.teaser{
+  background:rgba(17,24,39,0.75);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(45,212,191,0.15);
+  box-shadow:0 8px 32px rgba(0,0,0,0.35);
+}
+
+.site-nav{
+  background:rgba(2,6,23,0.8);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(45,212,191,0.15);
+}
+
+h1{
+  text-shadow:0 0 12px rgba(45,212,191,0.5);
+}
+
+.panel:hover,.teaser:hover{
+  transform:translateY(-3px);
+  transition:0.3s ease;
+  box-shadow:0 10px 35px rgba(45,212,191,0.15);
+}
+
+.profile-hero {
     padding: 72px 0 56px;
   }
 
@@ -203,6 +269,14 @@
       <p>Eight units, each with notes and a short interactive quiz to check your understanding as you go.</p>
     </div>
     <a href="Datastructures.html" class="btn btn-primary">View Units</a>
+  </div>
+
+  <div class="teaser">
+    <div>
+      <h3 style="margin-bottom:4px;">Data Structures Lab</h3>
+      <p>Hands-on practice problems — arrange the code, trace the state, and check your concepts.</p>
+    </div>
+    <a href="DatastructuresLab.html" class="btn btn-primary">View Programs</a>
   </div>
 
 </main>
