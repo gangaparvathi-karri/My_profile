@@ -7,6 +7,153 @@
 <link rel="stylesheet" href="styles.css">
 <style>
 
+/* ============================================================
+   Inlined shared design-system rules (so this page renders
+   correctly with its full background/theme even on its own,
+   with no dependency on styles.css being present)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:        #0B1B2B;
+  --panel:     #13263B;
+  --panel-2:   #1B344F;
+  --line:      #25425F;
+  --teal:      #2DD4BF;
+  --teal-dim:  #1C8A7C;
+  --amber:     #F2A93B;
+  --text:      #EAF2F5;
+  --text-dim:  #7C93A8;
+  --good:      #4ADE80;
+  --bad:       #F26B6B;
+
+  --display: 'Space Grotesk', sans-serif;
+  --body: 'Source Serif 4', Georgia, serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Ambient technical backdrop: faint circuit/graph grid, fixed, behind everything */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(45, 212, 191, 0.10), transparent 40%),
+    radial-gradient(circle at 82% 78%, rgba(242, 169, 59, 0.08), transparent 42%),
+    linear-gradient(rgba(124, 147, 168, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 147, 168, 0.07) 1px, transparent 1px);
+  background-size: auto, auto, 42px 42px, 42px 42px;
+  pointer-events: none;
+}
+
+a { color: inherit; }
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Top nav ---------- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(11, 27, 43, 0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.site-nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.site-nav .brand {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  color: var(--text);
+}
+.site-nav .brand span { color: var(--teal); }
+.site-nav .links { display: flex; gap: 22px; }
+.site-nav .links a {
+  font-family: var(--display);
+  font-size: 0.92rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  transition: color 0.15s ease;
+}
+.site-nav .links a:hover,
+.site-nav .links a:focus-visible { color: var(--teal); }
+
+/* ---------- Headings & basic type ---------- */
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5em;
+}
+h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); color: var(--teal); }
+h3 { font-size: 1.15rem; color: var(--amber); }
+
+p { color: var(--text); }
+.muted { color: var(--text-dim); }
+
+code, .mono { font-family: var(--mono); font-size: 0.9em; }
+
+/* ---------- Cards / panels ---------- */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-family: var(--display);
+  font-size: 0.85rem;
+  padding: 36px 0 48px;
+}
+
+/* ---------- Focus visibility ---------- */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+@media (max-width: 640px) {
+  .site-nav .links { gap: 12px; font-size: 0.8rem; }
+  .panel { padding: 20px; }
+}
+
+/* ============================================================
+   Page-specific rules
+   ============================================================ */
+
   .hub-hero { padding: 56px 0 8px; }
   .hub-hero p { max-width: 620px; color: var(--text-dim); }
 
@@ -96,7 +243,7 @@
     <span class="eyebrow" style="font-family:var(--mono); color:var(--teal); font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em;">Course Map</span>
     <h1>Data Structures</h1>
     <p>
-      Eight units, ordered roughly the way most courses teach them — from the simplest
+      Nine units, ordered roughly the way most courses teach them — from the simplest
       way to hold data in memory, through to the structures that make fast lookup and search possible.
       Each one opens into its own page with notes, a small diagram, and a quick quiz.
     </p>
@@ -159,15 +306,17 @@
       <h3>Searching Techniques</h3>
       <p>Finding what you need, from linear scans to binary search.</p>
     </a>
-<a class="node" href="unit-arrayvslinkedlists.html">
+
+    <a class="node" href="unit-arrayvslinkedlists.html">
       <span class="dot" aria-hidden="true"></span>
       <span class="idx">09</span>
-      <h3>Comparision Techniques</h3>
-      <p>Better knowledge when compared</p>
+      <h3>Arrays vs Linked Lists</h3>
+      <p>An interactive, side-by-side look at the trade-off that started it all.</p>
     </a>
+
   </div>
 
-  <p class="connector-note">// each unit page includes notes + a short interactive quiz</p>
+  <p class="connector-note">// most units include notes + a short interactive quiz; Unit 09 is a hands-on visual lab</p>
 
 </main>
 
