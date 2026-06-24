@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Structures Notes — K. Ganga Parvathi</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+
+:root{
+  --bg:#0b1120;
+  --panel:#111827;
+  --panel-2:#1f2937;
+  --text:#e5e7eb;
+  --text-dim:#94a3b8;
+  --teal:#2DD4BF;
+  --teal-dim:#134e4a;
+  --amber:#F2A93B;
+  --line:#334155;
+  --mono:'Consolas', monospace;
+  --display:'Segoe UI', sans-serif;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:var(--display);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(45,212,191,0.18), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(59,130,246,0.15), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(242,169,59,0.12), transparent 30%),
+    linear-gradient(135deg, #020617, #0f172a, #111827);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.bg-grid{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background-image:
+    linear-gradient(rgba(45,212,191,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,212,191,0.08) 1px, transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 15s linear infinite;
+}
+
+@keyframes gridMove{
+  from{transform:translateY(0);}
+  to{transform:translateY(40px);}
+}
+
+.panel{
+  background:rgba(17,24,39,0.75);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(45,212,191,0.15);
+  box-shadow:0 8px 32px rgba(0,0,0,0.35);
+}
+
+.site-nav{
+  background:rgba(2,6,23,0.8);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(45,212,191,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.site-nav .wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 24px;
+  max-width:1200px;
+  margin:0 auto;
+}
+.site-nav .brand{
+  color:var(--text);
+  font-family:var(--mono);
+  font-weight:700;
+  text-decoration:none;
+  font-size:1.05rem;
+}
+.site-nav .brand span{ color:var(--teal); }
+.site-nav .links a{
+  color:var(--text-dim);
+  text-decoration:none;
+  margin-left:22px;
+  font-size:0.92rem;
+  transition:color 0.15s ease;
+}
+.site-nav .links a:hover{ color:var(--teal); }
+
+.wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
+
+.notes-hero{ padding:56px 0 24px; }
+.notes-hero h1{
+  text-shadow:0 0 12px rgba(45,212,191,0.5);
+  margin-bottom:8px;
+}
+.notes-hero p{ color:var(--text-dim); max-width:680px; }
+.eyebrow{
+  font-family: var(--mono);
+  color: var(--teal);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns: 260px 1fr;
+  gap:28px;
+  padding-bottom:80px;
+  align-items:start;
+}
+
+.toc{
+  position:sticky;
+  top:90px;
+  padding:22px;
+  border-radius:14px;
+}
+.toc h4{
+  margin:0 0 12px;
+  color:var(--amber);
+  font-size:0.85rem;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  font-family:var(--mono);
+}
+.toc ol{
+  margin:0;
+  padding-left:0;
+  list-style:none;
+  counter-reset: toc-counter;
+}
+.toc li{
+  counter-increment: toc-counter;
+  margin-bottom:10px;
+}
+.toc li a{
+  color:var(--text-dim);
+  text-decoration:none;
+  font-size:0.88rem;
+  display:flex;
+  gap:8px;
+}
+.toc li a::before{
+  content: counter(toc-counter);
+  font-family:var(--mono);
+  color:var(--teal);
+  flex-shrink:0;
+}
+.toc li a:hover{ color:var(--teal); }
+
+.content section{
+  padding:30px 32px;
+  border-radius:14px;
+  margin-bottom:28px;
+}
+.content h2{
+  color:var(--teal);
+  font-size:1.4rem;
+  margin:0 0 6px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.content h2 .unit-tag{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--bg);
+  background:var(--amber);
+  padding:3px 9px;
+  border-radius:999px;
+  letter-spacing:0.04em;
+}
+.content h3{
+  color:var(--amber);
+  font-size:1.08rem;
+  margin:26px 0 10px;
+}
+.content h4{
+  color:var(--text);
+  font-size:0.96rem;
+  margin:18px 0 8px;
+}
+.content p{ color:var(--text-dim); line-height:1.7; margin:8px 0; }
+.content ul, .content ol{ color:var(--text-dim); line-height:1.75; padding-left:22px; }
+.content li{ margin-bottom:6px; }
+.content strong{ color:var(--text); }
+
+.divider{
+  height:1px;
+  background:var(--line);
+  margin:22px 0;
+}
+
+code, pre code{
+  font-family: var(--mono);
+  color:#7dd3c0;
+}
+pre{
+  background:#020617;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:16px 18px;
+  overflow-x:auto;
+  margin:14px 0;
+  font-size:0.86rem;
+  line-height:1.55;
+}
+.inline-code{
+  background:rgba(45,212,191,0.08);
+  border:1px solid var(--teal-dim);
+  padding:2px 7px;
+  border-radius:6px;
+  font-family:var(--mono);
+  font-size:0.86rem;
+  color:var(--teal);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:14px 0 6px;
+  font-size:0.9rem;
+}
+th, td{
+  border:1px solid var(--line);
+  padding:10px 14px;
+  text-align:left;
+  color:var(--text-dim);
+}
+th{
+  background:rgba(45,212,191,0.08);
+  color:var(--teal);
+  font-family:var(--mono);
+  font-size:0.82rem;
+  text-transform:uppercase;
+  letter-spacing:0.03em;
+}
+tr:nth-child(even) td{ background:rgba(255,255,255,0.02); }
+
+.note-box{
+  border-left:3px solid var(--teal);
+  background:rgba(45,212,191,0.06);
+  padding:14px 18px;
+  border-radius:0 10px 10px 0;
+  margin:16px 0;
+}
+.note-box p{ margin:0; color:var(--text); font-size:0.92rem; }
+.note-box strong{ color:var(--teal); }
+
+.warn-box{
+  border-left:3px solid var(--amber);
+  background:rgba(242,169,59,0.07);
+  padding:14px 18px;
+  border-radius:0 10px 10px 0;
+  margin:16px 0;
+}
+.warn-box p{ margin:0; color:var(--text); font-size:0.92rem; }
+.warn-box strong{ color:var(--amber); }
+
+.complexity-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+  gap:10px;
+  margin:14px 0;
+}
+.complexity-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 14px;
+  text-align:center;
+}
+.complexity-card .label{
+  font-size:0.74rem;
+  color:var(--text-dim);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  font-family:var(--mono);
+}
+.complexity-card .value{
+  font-family:var(--mono);
+  color:var(--teal);
+  font-size:1.05rem;
+  margin-top:4px;
+}
+
+.btn{
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  transition: border-color .15s ease, color .15s ease;
+}
+.btn:hover{ border-color:var(--teal); color:var(--teal); }
+
+footer{
+  text-align:center;
+  color:var(--text-dim);
+  font-size:0.85rem;
+  padding:30px 0;
+  font-family:var(--mono);
+}
+
+@media (max-width: 880px){
+  .layout{ grid-template-columns: 1fr; }
+  .toc{ position:relative; top:0; }
+  .content section{ padding:22px 18px; }
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand">DS<span>::</span>Portal</a>
+    <div class="links">
+      <a href="index.html">Profile</a>
+      <a href="Datastructures.html">Topics</a>
+      <a href="DatastructuresNotes.html">Notes</a>
+      <a href="DatastructuresLab.html">Lab</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <div class="notes-hero">
+    <span class="eyebrow">Data Structures · Detailed Notes</span>
+    <h1>Unit Notes &amp; Reference</h1>
+    <p>Comprehensive, exam-ready notes covering data structure operations, algorithm analysis,
+      searching techniques, hashing, and key sorting algorithms — with definitions, complexity
+      analysis, and code outlines for each topic.</p>
+  </div>
+
+  <div class="layout">
+
+    <!-- Table of Contents -->
+    <aside class="panel toc">
+      <h4>On this page</h4>
+      <ol>
+        <li><a href="#ds-operations">Data Structure Operations</a></li>
+        <li><a href="#algo-analysis">Analysis of Algorithms &amp; Efficiency</a></li>
+        <li><a href="#asymptotic">Asymptotic Notations</a></li>
+        <li><a href="#efficiency-classes">Basic Efficiency Classes</a></li>
+        <li><a href="#sequential-search">Sequential Search</a></li>
+        <li><a href="#binary-search">Binary Search</a></li>
+        <li><a href="#interpolation-search">Interpolation Search</a></li>
+        <li><a href="#search-comparison">Comparison &amp; Analysis of Searches</a></li>
+        <li><a href="#hash-table">Hash Table &amp; Hash Functions</a></li>
+        <li><a href="#collision-resolution">Collision Resolution Techniques</a></li>
+        <li><a href="#insertion-sort">Insertion Sort</a></li>
+        <li><a href="#shell-sort">Shell Sort</a></li>
+        <li><a href="#quick-sort">Quick Sort</a></li>
+      </ol>
+    </aside>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- 1. Data Structure Operations -->
+      <section class="panel" id="ds-operations">
+        <h2><span class="unit-tag">UNIT</span> Data Structure Operations</h2>
+        <p>A <strong>data structure</strong> is a systematic way of organizing and storing data so
+          that it can be accessed and modified efficiently. Regardless of the specific structure
+          (array, linked list, stack, tree, graph, etc.), most of them support a common set of
+          fundamental operations.</p>
+
+        <h3>Core Operations</h3>
+        <ul>
+          <li><strong>Traversing</strong> — visiting every element of the data structure exactly
+            once, typically to display or process the data (e.g., printing all nodes of a linked list).</li>
+          <li><strong>Searching</strong> — finding the location of a given element/key within
+            the structure (e.g., sequential or binary search).</li>
+          <li><strong>Insertion</strong> — adding a new element into the structure, at the
+            beginning, end, or a specific position.</li>
+          <li><strong>Deletion</strong> — removing an existing element from the structure while
+            keeping the remaining elements consistent.</li>
+          <li><strong>Sorting</strong> — arranging elements in a defined order (ascending or
+            descending), using algorithms such as insertion sort, shell sort, or quick sort.</li>
+          <li><strong>Merging</strong> — combining two data structures of the same type (e.g.,
+            two sorted lists) into a single structure while preserving order.</li>
+          <li><strong>Updating</strong> — modifying the value of an existing element without
+            changing its position.</li>
+        </ul>
+
+        <div class="note-box">
+          <p><strong>Why it matters:</strong> the choice of data structure directly affects the
+            time and space complexity of these operations. For example, insertion at the head of
+            a linked list is O(1), while insertion at the head of an array is O(n) because all
+            subsequent elements must shift.</p>
+        </div>
+
+        <h3>Classification</h3>
+        <table>
+          <tr><th>Type</th><th>Examples</th><th>Characteristic</th></tr>
+          <tr><td>Linear</td><td>Array, Linked List, Stack, Queue</td><td>Elements arranged sequentially</td></tr>
+          <tr><td>Non-linear</td><td>Tree, Graph</td><td>Elements connected hierarchically/arbitrarily</td></tr>
+          <tr><td>Homogeneous</td><td>Array</td><td>All elements of the same type</td></tr>
+          <tr><td>Non-homogeneous</td><td>Structures/Records</td><td>Elements of different types</td></tr>
+        </table>
+      </section>
+
+      <!-- 2. Fundamentals of Algorithm Analysis -->
+      <section class="panel" id="algo-analysis">
+        <h2><span class="unit-tag">UNIT</span> Fundamentals of Analysis of Algorithms &amp; Efficiency</h2>
+        <p><strong>Algorithm analysis</strong> is the process of determining the amount of
+          resources (time and space) an algorithm needs to run, as a function of the size of its
+          input. The goal is to predict performance and compare alternative algorithms
+          independent of hardware or implementation language.</p>
+
+        <h3>Why Analyze Efficiency?</h3>
+        <ul>
+          <li>To predict how an algorithm's running time grows as input size increases.</li>
+          <li>To compare two or more algorithms that solve the same problem.</li>
+          <li>To identify performance bottlenecks before implementation.</li>
+        </ul>
+
+        <h3>Measures of Efficiency</h3>
+        <ul>
+          <li><strong>Time complexity</strong> — number of basic operations (comparisons,
+            assignments) executed as a function of input size <em>n</em>.</li>
+          <li><strong>Space complexity</strong> — amount of memory used by the algorithm,
+            including auxiliary space, as a function of <em>n</em>.</li>
+        </ul>
+
+        <h3>Approaches to Analysis</h3>
+        <ul>
+          <li><strong>Worst-case analysis</strong> — the maximum time taken over all inputs of
+            size <em>n</em>. Most commonly used since it gives an upper bound guarantee.</li>
+          <li><strong>Best-case analysis</strong> — the minimum time taken; usually not very
+            informative on its own.</li>
+          <li><strong>Average-case analysis</strong> — the expected time over all possible
+            inputs, assuming a probability distribution; harder to compute but realistic.</li>
+        </ul>
+
+        <h3>Counting Basic Operations — Example</h3>
+        <p>Consider a loop that adds <em>n</em> numbers:</p>
+        <pre><code>sum = 0
+for i = 1 to n:
+    sum = sum + a[i]
+return sum</code></pre>
+        <p>The loop body executes exactly <em>n</em> times, so the algorithm has time complexity
+          <span class="inline-code">O(n)</span> — linear in the input size.</p>
+      </section>
+
+      <!-- 3. Asymptotic Notations -->
+      <section class="panel" id="asymptotic">
+        <h2><span class="unit-tag">UNIT</span> Asymptotic Notations</h2>
+        <p>Asymptotic notation describes the limiting behaviour of a function (the algorithm's
+          running time) as the input size grows toward infinity, ignoring constant factors and
+          lower-order terms.</p>
+
+        <h3>Big-O Notation — O(g(n))</h3>
+        <p>Represents the <strong>upper bound</strong> (worst case) of an algorithm's growth rate.
+          f(n) = O(g(n)) if there exist positive constants c and n₀ such that:</p>
+        <pre><code>0 ≤ f(n) ≤ c · g(n)   for all n ≥ n₀</code></pre>
+        <p>Example: if f(n) = 3n² + 5n + 2, then f(n) = O(n²).</p>
+
+        <h3>Big-Omega Notation — Ω(g(n))</h3>
+        <p>Represents the <strong>lower bound</strong> (best case) of an algorithm's growth rate.
+          f(n) = Ω(g(n)) if there exist positive constants c and n₀ such that:</p>
+        <pre><code>0 ≤ c · g(n) ≤ f(n)   for all n ≥ n₀</code></pre>
+
+        <h3>Big-Theta Notation — Θ(g(n))</h3>
+        <p>Represents a <strong>tight bound</strong> — used when an algorithm's running time is
+          bounded both above and below by the same function (up to constant factors):</p>
+        <pre><code>c₁ · g(n) ≤ f(n) ≤ c₂ · g(n)   for all n ≥ n₀</code></pre>
+
+        <h3>Little-o and Little-omega</h3>
+        <ul>
+          <li><strong>o(g(n))</strong> — a strict upper bound; f(n) grows strictly slower than g(n).</li>
+          <li><strong>ω(g(n))</strong> — a strict lower bound; f(n) grows strictly faster than g(n).</li>
+        </ul>
+
+        <div class="note-box">
+          <p><strong>Quick rule:</strong> Big-O ≈ "at most", Big-Omega ≈ "at least",
+            Big-Theta ≈ "exactly (order of)".</p>
+        </div>
+      </section>
+
+      <!-- 4. Basic Efficiency Classes -->
+      <section class="panel" id="efficiency-classes">
+        <h2><span class="unit-tag">UNIT</span> Basic Efficiency Classes</h2>
+        <p>Algorithms are commonly grouped into efficiency classes based on their growth rate.
+          The table below lists them from most to least efficient.</p>
+
+        <table>
+          <tr><th>Class</th><th>Name</th><th>Example Algorithm</th></tr>
+          <tr><td>O(1)</td><td>Constant</td><td>Array index access</td></tr>
+          <tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search</td></tr>
+          <tr><td>O(n)</td><td>Linear</td><td>Sequential search</td></tr>
+          <tr><td>O(n log n)</td><td>Linearithmic</td><td>Merge sort, Quick sort (avg.)</td></tr>
+          <tr><td>O(n²)</td><td>Quadratic</td><td>Insertion sort, Bubble sort</td></tr>
+          <tr><td>O(n³)</td><td>Cubic</td><td>Matrix multiplication (naive)</td></tr>
+          <tr><td>O(2ⁿ)</td><td>Exponential</td><td>Subset generation, brute-force TSP</td></tr>
+          <tr><td>O(n!)</td><td>Factorial</td><td>Permutation generation</td></tr>
+        </table>
+
+        <div class="warn-box">
+          <p><strong>Note:</strong> as <em>n</em> grows large, even a small difference in
+            efficiency class (e.g., O(n) vs O(n²)) leads to dramatically different running
+            times — this is why asymptotic classification matters more than constant factors.</p>
+        </div>
+      </section>
+
+      <!-- 5. Sequential Search -->
+      <section class="panel" id="sequential-search">
+        <h2><span class="unit-tag">SEARCH</span> Sequential (Linear) Search</h2>
+        <p>Sequential search checks each element of the list one by one, starting from the first,
+          until the target element is found or the list is exhausted. It works on both sorted and
+          unsorted lists.</p>
+
+        <pre><code>function sequentialSearch(arr, target):
+    for i = 0 to length(arr) - 1:
+        if arr[i] == target:
+            return i
+    return -1</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Best Case</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Average Case</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Worst Case</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(1)</div></div>
+        </div>
+        <p>Best case occurs when the target is the first element; worst case occurs when the
+          target is the last element or absent from the list.</p>
+      </section>
+
+      <!-- 6. Binary Search -->
+      <section class="panel" id="binary-search">
+        <h2><span class="unit-tag">SEARCH</span> Binary Search</h2>
+        <p>Binary search works only on a <strong>sorted</strong> list. It repeatedly divides the
+          search interval in half: compare the target with the middle element, and discard the
+          half of the list that cannot contain the target.</p>
+
+        <pre><code>function binarySearch(arr, target):
+    low = 0
+    high = length(arr) - 1
+    while low <= high:
+        mid = (low + high) / 2
+        if arr[mid] == target:
+            return mid
+        else if arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Best Case</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Average Case</div><div class="value">O(log n)</div></div>
+          <div class="complexity-card"><div class="label">Worst Case</div><div class="value">O(log n)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(1) iterative</div></div>
+        </div>
+
+        <div class="note-box">
+          <p><strong>Precondition:</strong> the array must be sorted before applying binary
+            search; otherwise the halving logic gives incorrect results.</p>
+        </div>
+      </section>
+
+      <!-- 7. Interpolation Search -->
+      <section class="panel" id="interpolation-search">
+        <h2><span class="unit-tag">SEARCH</span> Interpolation Search</h2>
+        <p>Interpolation search improves on binary search for <strong>uniformly distributed,
+          sorted</strong> data. Instead of always probing the middle, it estimates the probable
+          position of the target using a formula similar to linear interpolation — closer to how
+          we might guess a name's location in a phone book based on its first letter.</p>
+
+        <pre><code>pos = low + ((target - arr[low]) * (high - low)) /
+            (arr[high] - arr[low])</code></pre>
+
+        <pre><code>function interpolationSearch(arr, target):
+    low = 0
+    high = length(arr) - 1
+    while low <= high and target >= arr[low] and target <= arr[high]:
+        if low == high:
+            if arr[low] == target: return low
+            return -1
+        pos = low + ((target - arr[low]) * (high - low)) /
+                    (arr[high] - arr[low])
+        if arr[pos] == target:
+            return pos
+        else if arr[pos] < target:
+            low = pos + 1
+        else:
+            high = pos - 1
+    return -1</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Best Case</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Average Case</div><div class="value">O(log log n)</div></div>
+          <div class="complexity-card"><div class="label">Worst Case</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(1)</div></div>
+        </div>
+        <p>Worst case (O(n)) occurs when the data is not uniformly distributed, causing repeated
+          poor position estimates — e.g., highly skewed values.</p>
+      </section>
+
+      <!-- 8. Comparison & Analysis -->
+      <section class="panel" id="search-comparison">
+        <h2><span class="unit-tag">SEARCH</span> Comparison &amp; Analysis of Searching Techniques</h2>
+        <table>
+          <tr>
+            <th>Technique</th><th>Data Requirement</th><th>Best</th><th>Average</th><th>Worst</th>
+          </tr>
+          <tr>
+            <td>Sequential Search</td><td>None (sorted or unsorted)</td>
+            <td>O(1)</td><td>O(n)</td><td>O(n)</td>
+          </tr>
+          <tr>
+            <td>Binary Search</td><td>Sorted</td>
+            <td>O(1)</td><td>O(log n)</td><td>O(log n)</td>
+          </tr>
+          <tr>
+            <td>Interpolation Search</td><td>Sorted &amp; uniformly distributed</td>
+            <td>O(1)</td><td>O(log log n)</td><td>O(n)</td>
+          </tr>
+        </table>
+
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Sequential search is simplest and works on any list, but scales poorly for large n.</li>
+          <li>Binary search needs sorted data but gives a reliable logarithmic guarantee.</li>
+          <li>Interpolation search can outperform binary search on uniformly distributed sorted
+            data, but degrades to linear time on skewed distributions.</li>
+          <li>For very large datasets where O(1) lookup is required regardless of order,
+            <strong>hashing</strong> (below) is generally preferred over all three.</li>
+        </ul>
+      </section>
+
+      <!-- 9. Hash Table -->
+      <section class="panel" id="hash-table">
+        <h2><span class="unit-tag">HASHING</span> Hash Table &amp; Hash Functions</h2>
+        <p>A <strong>hash table</strong> is a data structure that maps keys to values using a
+          <strong>hash function</strong>, allowing near-constant-time insertion, deletion, and
+          lookup on average.</p>
+
+        <h3>Hash Function</h3>
+        <p>A hash function <span class="inline-code">h(key)</span> converts a key into an index
+          within the bounds of the underlying array (the hash table). A good hash function should:</p>
+        <ul>
+          <li>Be fast to compute.</li>
+          <li>Distribute keys uniformly across the table to minimize clustering.</li>
+          <li>Minimize collisions (two different keys mapping to the same index).</li>
+        </ul>
+
+        <h4>Common Hash Function Methods</h4>
+        <ul>
+          <li><strong>Division method:</strong> <span class="inline-code">h(key) = key mod m</span>,
+            where m is the table size (commonly a prime number).</li>
+          <li><strong>Multiplication method:</strong> uses the fractional part of
+            <span class="inline-code">key × A</span> (0 &lt; A &lt; 1) to compute the index.</li>
+          <li><strong>Mid-square method:</strong> squares the key and extracts the middle digits
+            as the index.</li>
+          <li><strong>Folding method:</strong> splits the key into parts, sums them, and uses the
+            result (mod table size) as the index.</li>
+        </ul>
+
+        <div class="note-box">
+          <p><strong>Load factor (α):</strong> α = n / m, where n is the number of stored entries
+            and m is the table size. A high load factor increases the likelihood of collisions.</p>
+        </div>
+      </section>
+
+      <!-- 10. Collision Resolution -->
+      <section class="panel" id="collision-resolution">
+        <h2><span class="unit-tag">HASHING</span> Collision Resolution Techniques</h2>
+        <p>A <strong>collision</strong> occurs when two distinct keys hash to the same table index.
+          Collision resolution techniques fall into two broad categories: open hashing and closed
+          hashing.</p>
+
+        <h3>Open Hashing (Open Addressing is NOT this — see note below)</h3>
+        <p>Also called <strong>separate chaining</strong>. Each table slot holds a pointer to a
+          linked list (or chain) of all keys that hash to that slot. On collision, the new entry
+          is simply appended to the chain at that index.</p>
+        <pre><code>Index 0 → [keyA] → [keyD] → null
+Index 1 → [keyB] → null
+Index 2 → [keyC] → [keyE] → [keyF] → null</code></pre>
+        <ul>
+          <li><strong>Insertion:</strong> compute h(key), append node to the chain at that index.</li>
+          <li><strong>Search/Deletion:</strong> compute h(key), then traverse the chain at that index.</li>
+          <li><strong>Advantage:</strong> table never "fills up"; performance degrades gracefully.</li>
+          <li><strong>Disadvantage:</strong> requires extra memory for pointers; long chains
+            degrade lookup to O(n) in the worst case.</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <h3>Closed Hashing (Open Addressing)</h3>
+        <p>All entries are stored <strong>within the table itself</strong> — no chaining. On
+          collision, the algorithm probes for the next available slot according to a defined
+          sequence.</p>
+
+        <h4>Probing Methods</h4>
+        <ul>
+          <li><strong>Linear Probing:</strong> <span class="inline-code">h(key, i) = (h(key) + i) mod m</span>.
+            Checks the next slot sequentially. Simple, but prone to <em>primary clustering</em>
+            (long runs of occupied slots).</li>
+          <li><strong>Quadratic Probing:</strong> <span class="inline-code">h(key, i) = (h(key) + c₁i + c₂i²) mod m</span>.
+            Reduces primary clustering by probing slots at increasing quadratic distances.</li>
+          <li><strong>Double Hashing:</strong> <span class="inline-code">h(key, i) = (h₁(key) + i · h₂(key)) mod m</span>.
+            Uses a second hash function to determine the probe interval, minimizing clustering further.</li>
+        </ul>
+
+        <pre><code>function insert(table, key):
+    i = 0
+    index = h(key)
+    while table[index] is occupied:
+        i = i + 1
+        index = (h(key) + i) mod m     // linear probing
+    table[index] = key</code></pre>
+
+        <ul>
+          <li><strong>Advantage:</strong> no extra pointer memory; better cache locality.</li>
+          <li><strong>Disadvantage:</strong> table can become full; deletions require special
+            handling (e.g., "tombstone" markers) to avoid breaking probe sequences.</li>
+        </ul>
+
+        <h3>Open vs Closed Hashing — Quick Comparison</h3>
+        <table>
+          <tr><th>Aspect</th><th>Open Hashing (Chaining)</th><th>Closed Hashing (Probing)</th></tr>
+          <tr><td>Storage</td><td>Linked lists outside the table</td><td>Within the table array</td></tr>
+          <tr><td>Table can overflow?</td><td>No (chains grow)</td><td>Yes, once full</td></tr>
+          <tr><td>Memory overhead</td><td>Extra pointers</td><td>None extra</td></tr>
+          <tr><td>Deletion</td><td>Straightforward</td><td>Needs tombstones/care</td></tr>
+          <tr><td>Clustering issue</td><td>None</td><td>Possible (esp. linear probing)</td></tr>
+        </table>
+      </section>
+
+      <!-- 11. Insertion Sort -->
+      <section class="panel" id="insertion-sort">
+        <h2><span class="unit-tag">SORTING</span> Insertion Sort</h2>
+        <p>Insertion sort builds the final sorted array one element at a time. It takes each
+          element and inserts it into its correct position among the previously sorted elements —
+          much like sorting playing cards in your hand.</p>
+
+        <pre><code>function insertionSort(arr):
+    for i = 1 to length(arr) - 1:
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j = j - 1
+        arr[j + 1] = key</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Best Case</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Average Case</div><div class="value">O(n²)</div></div>
+          <div class="complexity-card"><div class="label">Worst Case</div><div class="value">O(n²)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(1)</div></div>
+        </div>
+        <p><strong>Best case</strong> (already sorted): O(n), since the inner while loop never
+          executes. <strong>Stable:</strong> Yes. <strong>In-place:</strong> Yes. Efficient for
+          small or nearly-sorted datasets.</p>
+      </section>
+
+      <!-- 12. Shell Sort -->
+      <section class="panel" id="shell-sort">
+        <h2><span class="unit-tag">SORTING</span> Shell Sort</h2>
+        <p>Shell sort is a generalization of insertion sort that allows the exchange of elements
+          that are far apart. It starts by sorting elements far apart from each other (using a
+          "gap" sequence), then progressively reduces the gap, with the final pass being a
+          standard insertion sort (gap = 1).</p>
+
+        <pre><code>function shellSort(arr):
+    n = length(arr)
+    gap = n / 2
+    while gap > 0:
+        for i = gap to n - 1:
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j = j - gap
+            arr[j] = temp
+        gap = gap / 2</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Best Case</div><div class="value">O(n log n)</div></div>
+          <div class="complexity-card"><div class="label">Average Case</div><div class="value">O(n^1.25)*</div></div>
+          <div class="complexity-card"><div class="label">Worst Case</div><div class="value">O(n²)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(1)</div></div>
+        </div>
+        <p>*Average case depends on the chosen gap sequence (e.g., Shell's original sequence,
+          Knuth's sequence). <strong>Stable:</strong> No. <strong>In-place:</strong> Yes.
+          Shell sort moves elements over larger distances early on, reducing the total number of
+          shifts compared to plain insertion sort.</p>
+
+        <div class="note-box">
+          <p><strong>Gap sequence matters:</strong> the original Shell sequence (n/2, n/4, ..., 1)
+            gives O(n²) worst case, while sequences like Knuth's (3ᵏ−1)/2 can improve performance
+            to roughly O(n^1.5).</p>
+        </div>
+      </section>
+
+      <!-- 13. Quick Sort -->
+      <section class="panel" id="quick-sort">
+        <h2><span class="unit-tag">SORTING</span> Quick Sort</h2>
+        <p>Quick sort is a divide-and-conquer algorithm. It selects a <strong>pivot</strong>
+          element, partitions the array so that elements smaller than the pivot come before it and
+          elements larger come after it, then recursively sorts the two partitions.</p>
+
+        <pre><code>function quickSort(arr, low, high):
+    if low < high:
+        pivotIndex = partition(arr, low, high)
+        quickSort(arr, low, pivotIndex - 1)
+        quickSort(arr, pivotIndex + 1, high)
+
+function partition(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    for j = low to high - 1:
+        if arr[j] <= pivot:
+            i = i + 1
+            swap(arr[i], arr[j])
+    swap(arr[i + 1], arr[high])
+    return i + 1</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Best Case</div><div class="value">O(n log n)</div></div>
+          <div class="complexity-card"><div class="label">Average Case</div><div class="value">O(n log n)</div></div>
+          <div class="complexity-card"><div class="label">Worst Case</div><div class="value">O(n²)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(log n)</div></div>
+        </div>
+        <p><strong>Stable:</strong> No. <strong>In-place:</strong> Yes (auxiliary stack space for
+          recursion only). Worst case O(n²) occurs when the pivot chosen is consistently the
+          smallest or largest element (e.g., an already-sorted array with last-element pivot
+          selection), causing maximally unbalanced partitions.</p>
+
+        <div class="warn-box">
+          <p><strong>Avoiding worst case:</strong> using randomized pivot selection or the
+            median-of-three rule (median of first, middle, and last elements) significantly
+            reduces the chance of hitting the O(n²) worst case in practice.</p>
+        </div>
+      </section>
+
+      <div style="text-align:center; margin-top:10px;">
+        <a href="Datastructures.html" class="btn">← Back to Units</a>
+        <a href="DatastructuresLab.html" class="btn">Practice in Lab →</a>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>&copy; 2026 Ganga Parvathi · Learning Portal</footer>
+
+</body>
+</html>
