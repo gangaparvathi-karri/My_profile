@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ANITS FDP — AI Karyashala</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="ANITS FDP — AI Karyashala"/>
+  <meta property="og:description" content="Faculty Development Programme — hands-on sessions on AI tools, C programming, Git, GitHub, and building your first website."/>
+  <meta property="og:url" content="https://aikaryashala.github.io/fdp/anits/"/>
+  <meta property="og:image" content="https://aikaryashala.github.io/fdp/anits/fdp-anits.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:type" content="website"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Alegreya+SC:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+  html{zoom:1.25}
+    :root {
+      --bg:        #E8DDD0;
+      --bg-2:      #DFD3C4;
+      --bg-3:      #D4C5B0;
+      --card:      #F0EAE0;
+      --ink:       #1C0E08;
+      --ink-2:     #2F1708;
+      --ink-3:     #5B3520;
+      --ink-4:     #8B7060;
+      --border:    #C8B8A0;
+      --border-2:  #B0A088;
+      --blue:      #7A3018;
+      --blue-bg:   rgba(122,48,24,.08);
+      --blue-bg-2: rgba(122,48,24,.16);
+      --green:     #3A6B18;
+      --mono:      "Fira Code","Cascadia Code",ui-monospace,monospace;
+      --sans:      "Alegreya",Georgia,"Book Antiqua",serif;
+      --sc:        "Alegreya SC","Alegreya",Georgia,serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(#5a372314 .8px, transparent .8px),
+        linear-gradient(90deg, #0000000a 0%, transparent 12% 88%, #0000000a 100%);
+      background-size: 16px 16px, 100% 100%;
+      background-attachment: fixed;
+      color: var(--ink);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(232,221,208,.92);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 900px; margin: 0 auto; padding: 0 24px;
+      height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--ink);
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .nav-brand img { height: 22px; }
+    .nav-sep { width: 1px; height: 16px; background: var(--border-2); flex-shrink: 0; }
+    .nav-sub { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 900px; margin: 0 auto;
+      padding: 80px 24px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-family: var(--sc); font-size: 14px; font-weight: 500; letter-spacing: .06em;
+      color: var(--ink-4); margin-bottom: 22px;
+    }
+    .hero-title {
+      font-size: clamp(30px,5vw,56px); font-weight: 900;
+      line-height: 1.08; letter-spacing: -.035em; color: var(--ink); margin-bottom: 18px;
+    }
+    .hero-subtitle {
+      font-size: clamp(15px,1.8vw,18px); color: var(--ink-3);
+      line-height: 1.7; max-width: 600px; margin-bottom: 44px;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 32px;
+      padding-top: 32px; border-top: 1px solid var(--border);
+    }
+    .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .hero-meta-label {
+      font-family: var(--sc); font-size: 12px; font-weight: 500; letter-spacing: .06em;
+      color: var(--ink-4);
+    }
+    .hero-meta-value { font-size: 15px; font-weight: 600; color: var(--ink); }
+
+    /* ── Shell ── */
+    .shell { max-width: 900px; margin: 0 auto; padding: 0 24px 100px; }
+
+    /* ── Sessions Grid ── */
+    .sessions-header {
+      padding-top: 60px; margin-bottom: 28px;
+    }
+    .sessions-label {
+      font-family: var(--sc); font-size: 14px; font-weight: 500; letter-spacing: .06em;
+      color: var(--ink-4); margin-bottom: 8px;
+    }
+    .sessions-title {
+      font-size: clamp(20px,2.8vw,28px); font-weight: 700;
+      color: var(--ink); letter-spacing: -.01em;
+    }
+
+    .sessions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+
+    .session-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 24px;
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color .18s, box-shadow .18s;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .session-card:hover {
+      border-color: var(--border-2);
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .sc-open {
+      margin-top: auto;
+      padding-top: 16px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sc-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    }
+    .sc-day {
+      font-family: var(--sc); font-size: 12px; font-weight: 500; letter-spacing: .05em;
+      color: var(--ink-4);
+    }
+    .sc-badge {
+      font-family: var(--sc); font-size: 12px; font-weight: 500; letter-spacing: .05em;
+      color: var(--blue);
+      background: var(--blue-bg);
+      border: 1px solid rgba(122,48,24,.2);
+      border-radius: 20px; padding: 2px 8px;
+    }
+    .sc-title {
+      font-size: 16px; font-weight: 700; color: var(--ink);
+      letter-spacing: -.01em; line-height: 1.3; margin-bottom: 8px;
+    }
+    .sc-desc {
+      font-size: 13px; color: var(--ink-3); line-height: 1.6;
+      margin-bottom: 18px; flex: 1;
+    }
+
+
+    /* ── Install Steps ── */
+    .install-section { margin-bottom: 60px; }
+    .install-label {
+      font-family: var(--sc); font-size: 14px; font-weight: 500; letter-spacing: .06em;
+      color: var(--ink-4); margin-bottom: 8px;
+    }
+    .install-title {
+      font-size: clamp(18px,2.5vw,24px); font-weight: 700;
+      color: var(--ink); margin-bottom: 8px; letter-spacing: -.01em;
+    }
+    .install-desc {
+      font-size: 14px; color: var(--ink-3); line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .install-steps { display: flex; flex-direction: column; gap: 8px; }
+    .install-step {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 18px; border: 1px solid var(--border);
+      border-radius: 10px; background: var(--card);
+    }
+    .step-num {
+      flex-shrink: 0; width: 26px; height: 26px;
+      border-radius: 50%; background: var(--blue-bg-2);
+      font-size: 11px; font-weight: 800; color: var(--blue);
+      border: 1px solid rgba(122,48,24,.25);
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .step-body { flex: 1; }
+    .step-body strong { font-size: 14px; color: var(--ink); font-weight: 700; display: block; margin-bottom: 3px; }
+    .step-body p { font-size: 13.5px; color: var(--ink-2); line-height: 1.6; }
+    .step-body code {
+      font-family: var(--mono); font-size: 12.5px;
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px; color: var(--blue);
+    }
+    .step-note {
+      display: inline-block; margin-top: 6px;
+      font-size: 12px; color: var(--ink-4); font-style: italic;
+    }
+
+    /* ── Q&A ── */
+    .qa-section { margin-bottom: 60px; }
+    .qa-label {
+      font-family: var(--sc); font-size: 14px; font-weight: 500; letter-spacing: .06em;
+      color: var(--ink-4); margin-bottom: 8px;
+    }
+    .qa-title {
+      font-size: clamp(18px,2.5vw,24px); font-weight: 700;
+      color: var(--ink); margin-bottom: 8px; letter-spacing: -.01em;
+    }
+    .qa-desc {
+      font-size: 14px; color: var(--ink-3); line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .qa-list { display: flex; flex-direction: column; gap: 8px; }
+    .qa-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 15px 18px; border: 1px solid var(--border);
+      border-radius: 10px; background: var(--card);
+    }
+    .qa-badge {
+      flex-shrink: 0; width: 23px; height: 23px;
+      border-radius: 5px; background: var(--bg-3);
+      font-size: 10px; font-weight: 800; color: var(--ink-3);
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .qa-item p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+    /* ── Additional Resources ── */
+    .resources-section { margin-bottom: 60px; }
+    .resources-label {
+      font-family: var(--sc); font-size: 14px; font-weight: 500; letter-spacing: .06em;
+      color: var(--ink-4); margin-bottom: 8px;
+    }
+    .resources-title {
+      font-size: clamp(18px,2.5vw,24px); font-weight: 700;
+      color: var(--ink); margin-bottom: 20px; letter-spacing: -.01em;
+    }
+    .resource-stack { display: flex; flex-direction: column; gap: 10px; }
+    .resource-link {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 18px; border: 1px solid var(--border);
+      border-radius: 10px; text-decoration: none;
+      background: var(--card); transition: border-color .18s, background .18s;
+    }
+    .resource-link:hover { border-color: var(--border-2); background: var(--bg-2); }
+    .resource-body { flex: 1; min-width: 0; }
+    .resource-title-text { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+    .resource-url { font-size: 11.5px; color: var(--ink-4); margin-top: 2px; font-family: var(--mono); }
+    .resource-arrow { color: var(--ink-4); font-size: 14px; flex-shrink: 0; }
+
+    /* ── Footer ── */
+    .site-footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; }
+    .footer-inner { max-width: 900px; margin: 0 auto; }
+    .footer-text { font-size: 13px; color: var(--ink-4); }
+    .footer-text a { color: var(--ink-3); text-decoration: none; transition: color .18s; }
+    .footer-text a:hover { color: var(--ink); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .nav-sub, .nav-sep { display: none; }
+      .hero { padding: 48px 18px 40px; }
+      .shell { padding: 0 18px 80px; }
+      .hero-meta { gap: 18px; }
+      .hero-subtitle { margin-bottom: 28px; }
+      .sessions-grid { grid-template-columns: 1fr; }
+      .sessions-header { padding-top: 44px; }
+      .session-card { padding: 18px 16px; }
+      .install-step { padding: 12px 14px; gap: 10px; }
+      .qa-item { padding: 12px 14px; gap: 10px; }
+      .resource-link { padding: 11px 14px; gap: 10px; }
+      .resource-url { font-size: 11px; word-break: break-all; }
+    }
+
+    /* ── Scroll button ── */
+    .scroll-btn { position:fixed; bottom:28px; right:24px; z-index:200; width:40px; height:40px; border-radius:50%; background:var(--blue); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 3px 14px rgba(0,0,0,.22); transition:background .15s; }
+    .scroll-btn:hover { background:var(--ink-2); }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <img src="../../images/logo transparent.png" alt="AI Karyashala">
+      <span class="nav-sep"></span>
+      <span class="nav-sub">ANITS FDP</span>
+    </a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <p class="hero-eyebrow">Faculty Development Programme &nbsp;·&nbsp; June 2026</p>
+  <h1 class="hero-title">ANITS FDP on<br>Programming Languages</h1>
+  <p class="hero-subtitle">
+    Anil Neerukonda Institute of Technology &amp; Sciences (A), Visakhapatnam, Andhra Pradesh
+  </p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Dates</span>
+      <span class="hero-meta-value">15 – 18 June 2026</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Duration</span>
+      <span class="hero-meta-value">4 Days</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Sessions</span>
+      <span class="hero-meta-value">8 Sessions</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Host</span>
+      <span class="hero-meta-value">ANITS (A)</span>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="shell">
+
+  <!-- Sessions -->
+  <div class="sessions-header">
+    <p class="sessions-label">Programme</p>
+    <h2 class="sessions-title">Sessions</h2>
+  </div>
+
+  <div class="sessions-grid">
+
+    <!-- Session 1 -->
+    <a class="session-card" href="session1.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 1</span>
+        <span class="sc-badge">Session 1</span>
+      </div>
+      <h3 class="sc-title">C++, Python &amp; Java — Compilation Compared</h3>
+      <p class="sc-desc">
+        How each language takes source code to execution — video walkthrough, Telugu podcast, and language comparison.
+        Plus WSL &amp; Ubuntu environment setup.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 2 -->
+    <a class="session-card" href="session2.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 1</span>
+        <span class="sc-badge">Session 2</span>
+      </div>
+      <h3 class="sc-title">CS50.dev, Linux &amp; C Programming</h3>
+      <p class="sc-desc">
+        Cloud coding environment setup, Linux &amp; C commands, C compilation pipeline, system internals, and algebraic equation visualizers.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 3 -->
+    <a class="session-card" href="session3.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 2</span>
+        <span class="sc-badge">Session 1</span>
+      </div>
+      <h3 class="sc-title">Resources &amp; AI-Assisted Learning</h3>
+      <p class="sc-desc">
+        Curated resources for C programming and practice, plus an AI prompt template for structured, chunk-by-chunk learning of any technical topic.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 4 -->
+    <a class="session-card" href="session4.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 2</span>
+        <span class="sc-badge">Session 2</span>
+      </div>
+      <h3 class="sc-title">Build &amp; Deploy Your First Website</h3>
+      <p class="sc-desc">
+        Buy a domain, create a GitHub repo, write your first HTML page in the browser editor, deploy on GitHub Pages, and connect a custom domain with DNS A records.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 5 -->
+    <a class="session-card" href="session5.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 3</span>
+        <span class="sc-badge">Session 1</span>
+      </div>
+      <h3 class="sc-title">Git, GitHub, LLMs &amp; Claude Desktop</h3>
+      <p class="sc-desc">
+        SSH setup, git push workflow, real-world GitHub usage, branches &amp; pull requests, how LLMs process prompts, and Claude Desktop skills &amp; connectors for educators.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 6 -->
+    <a class="session-card" href="session6.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 3</span>
+        <span class="sc-badge">Session 2</span>
+      </div>
+      <h3 class="sc-title">Git Workflow, Push &amp; AI Code Prompts</h3>
+      <p class="sc-desc">
+        The four commands every developer repeats daily — git status, git add, git commit, git push — plus web editor vs local machine Git Bash explained.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 7 -->
+    <a class="session-card" href="session7.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 4</span>
+        <span class="sc-badge">Session 1</span>
+      </div>
+      <h3 class="sc-title">Practice, Co-work with Claude &amp; DNS</h3>
+      <p class="sc-desc">
+        Coding exercises for Python, Java &amp; C++ on codecheck.io, pair programming workflow with Claude AI, and an interactive DNS + HTTP visualizer for www.anits.edu.in.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+    <!-- Session 8 -->
+    <a class="session-card" href="session8.html">
+      <div class="sc-meta">
+        <span class="sc-day">Day 4</span>
+        <span class="sc-badge">Session 2</span>
+      </div>
+      <h3 class="sc-title">Answering the Questions &amp; Discussions</h3>
+      <p class="sc-desc">
+        Open Q&amp;A session — faculty questions from across all four days answered, key concepts revisited, and open discussion on teaching programming with AI tools.
+      </p>
+      <span class="sc-open">Open Session →</span>
+    </a>
+
+  </div>
+
+  <!-- Install Git Bash -->
+  <div class="install-section">
+    <p class="install-label">Setup Guide</p>
+    <h2 class="install-title">How to Install Git Bash on Windows</h2>
+    <p class="install-desc">Git Bash gives you a Unix-like terminal on Windows — with Git, Bash, and common Linux commands built in. Follow these steps to install it.</p>
+    <div class="install-steps">
+
+      <div class="install-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Download the Installer</strong>
+          <p>Go to <a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer" style="color:var(--blue);font-family:var(--mono);font-size:12.5px;">git-scm.com/download/win</a> in your browser. The 64-bit installer will start downloading automatically.</p>
+        </div>
+      </div>
+
+      <div class="install-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Verify the Installation</strong>
+          <p>In Git Bash, type <code>git --version</code> and press Enter. You should see output like <code>git version 2.x.x.windows.x</code>.</p>
+          <span class="step-note">You can also open Git Bash anytime from the Start Menu or by right-clicking any folder and selecting "Git Bash Here".</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Faculty Group Q&A -->
+  <div class="qa-section">
+    <p class="qa-label">Faculty Group Q&amp;A</p>
+    <h2 class="qa-title">Questions from Faculty Groups</h2>
+    <p class="qa-desc">Questions raised by faculty as groups during the session.</p>
+    <div class="qa-list">
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>In C programming, students show interest in arrays, for loops, and while loops — but when it comes to structures, pointers, and files, why do they lose interest?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>How can we use AI effectively for teaching?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>With the increasing use of AI tools, students often rely on generated code instead of developing their own programming skills. How can faculty address this challenge effectively?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>How can we assess students' actual programming abilities rather than their ability to memorise code?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>What are the industry-based tools and technologies students should be aware of?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>Can you suggest the best AI tools for teaching and learning programming concepts?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>Students should learn debugging techniques simultaneously with coding so that problem solving becomes easier. How can we make that happen?</p>
+      </div>
+      <div class="qa-item">
+        <div class="qa-badge">Q</div>
+        <p>How can we incorporate industry-oriented coding practices into the curriculum?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Resources -->
+  <div class="resources-section">
+    <p class="resources-label">Additional Resources</p>
+    <h2 class="resources-title">References</h2>
+    <div class="resource-stack">
+      <a href="https://rohinibarla.com/c/" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">C Programming Resources</div>
+          <div class="resource-url">rohinibarla.com/c/</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://horstmann.com/codecheck/python-questions.html" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">Python Practice Questions</div>
+          <div class="resource-url">horstmann.com/codecheck/python-questions.html</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="datastructures/index.html" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">Data Structures and Algorithms</div>
+          <div class="resource-url">aikaryashala.com/fdp/anits/datastructures</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="ai-tools.html" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">AI Tools Directory</div>
+          <div class="resource-url">ai-tools.html</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">Download Claude Desktop</div>
+          <div class="resource-url">claude.ai/download</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="visualizer.html" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">f(x) Math Visualizer</div>
+          <div class="resource-url">visualizer.html</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://editframe.com/" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">Editframe</div>
+          <div class="resource-url">editframe.com</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://rohinibarla.com/demo_anits/" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">Demo — ANITS</div>
+          <div class="resource-url">rohinibarla.com/demo_anits/</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://www.coursera.org/learn/build-a-computer" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">Build a Modern Computer from First Principles — Coursera</div>
+          <div class="resource-url">coursera.org/learn/build-a-computer</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://www.edx.org/learn/computer-science/harvard-university-cs50-s-introduction-to-computer-science" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">CS50's Introduction to Computer Science — Harvard / edX</div>
+          <div class="resource-url">edx.org — Harvard CS50</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+      <a href="https://www.linkedin.com/company/codershigh/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="resource-link">
+        <div class="resource-body">
+          <div class="resource-title-text">CodersHigh — LinkedIn</div>
+          <div class="resource-url">linkedin.com/company/codershigh</div>
+        </div>
+        <span class="resource-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-text">
+      <a href="../../index.html">← AI Karyashala</a>
+      &nbsp;&nbsp;·&nbsp;&nbsp;
+      © 2026 AI Karyashala
+    </p>
+  </div>
+</footer>
+
+<button class="scroll-btn" id="scrollBtn" onclick="scrollToggle()" title="Scroll">↓</button>
+<script>
+(function(){
+  var btn=document.getElementById("scrollBtn");
+  function upd(){ btn.textContent=(window.scrollY>200)?"↑":"↓"; }
+  window.addEventListener("scroll",upd,{passive:true});
+  upd();
+})();
+function scrollToggle(){
+  if(window.scrollY>200){ window.scrollTo({top:0,behavior:"smooth"}); }
+  else{ window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"}); }
+}
+</script>
+
+</body>
+</html>
