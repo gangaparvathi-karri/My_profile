@@ -1870,13 +1870,524 @@ Node* head = NULL;   // head points to the first node; NULL means empty list</co
   </div>
   </div>
   <!-- =================== END UNIT 3 =================== -->
+  <!-- ===================== UNIT 4 ===================== -->
   <div class="unit-panel" id="unit4">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 4</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 4 notes are being prepared and will appear here once ready.</p>
+  <div class="layout">
+
+    <!-- Table of Contents -->
+    <aside class="panel toc">
+      <h4>On this page</h4>
+      <ol>
+        <li><a href="#tree-terminology">Basic Terminology of Trees</a></li>
+        <li><a href="#binary-tree-types">Binary Trees: Full, Complete &amp; Extended</a></li>
+        <li><a href="#binary-tree-rep">Array &amp; Linked Representation of Binary Trees</a></li>
+        <li><a href="#binary-tree-traversal">Traversing Binary Trees</a></li>
+        <li><a href="#threaded-binary-tree">Threaded Binary Trees</a></li>
+        <li><a href="#bst">Binary Search Tree (BST)</a></li>
+        <li><a href="#bst-insert-delete">Insertion &amp; Deletion in BST</a></li>
+        <li><a href="#avl-rotations">AVL Trees &amp; Rotations</a></li>
+        <li><a href="#avl-insert-delete">Insertion &amp; Deletion in AVL Trees</a></li>
+      </ol>
+    </aside>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- 1. Basic terminology -->
+      <section class="panel" id="tree-terminology">
+        <h2><span class="unit-tag">TREE</span> Basic Terminology</h2>
+        <p>A <strong>tree</strong> is a hierarchical, non-linear data structure made up of nodes
+          connected by edges, starting from a single <strong>root</strong> node — unlike stacks,
+          queues, or linked lists, which are all linear.</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> a family genealogy chart, or the folder structure
+            on your computer — one top-level folder branches into sub-folders, which branch into
+            more sub-folders and files.</p>
+        </div>
+
+        <h3>Key Terms</h3>
+        <ul>
+          <li><strong>Root:</strong> the topmost node of the tree (has no parent).</li>
+          <li><strong>Parent:</strong> a node that has one or more nodes branching from it.</li>
+          <li><strong>Child:</strong> a node directly connected below a parent node.</li>
+          <li><strong>Leaf (terminal node):</strong> a node with no children.</li>
+          <li><strong>Siblings:</strong> nodes that share the same parent.</li>
+          <li><strong>Edge:</strong> the connection/link between a parent and a child.</li>
+          <li><strong>Degree of a node:</strong> the number of children it has.</li>
+          <li><strong>Depth/Level of a node:</strong> the number of edges from the root to that
+            node (root is at level 0).</li>
+          <li><strong>Height of a tree:</strong> the number of edges on the longest path from the
+            root to a leaf.</li>
+          <li><strong>Subtree:</strong> any node along with all of its descendants, treated as a
+            smaller tree on its own.</li>
+        </ul>
+
+        <h3>Diagram</h3>
+        <pre><code>            A          ← root, level 0
+          /   \
+         B     C        ← level 1 (children of A, siblings of each other)
+        / \     \
+       D   E     F      ← level 2 (D, E, F are leaves)</code></pre>
+        <p>Here, A is the root; B and C are children of A; D, E are leaves and children of B;
+          B and C are siblings; the height of this tree is 2 (longest path A→B→D or A→B→E).</p>
+      </section>
+
+      <!-- 2. Binary tree types -->
+      <section class="panel" id="binary-tree-types">
+        <h2><span class="unit-tag">TREE</span> Binary Trees — Full, Complete &amp; Extended</h2>
+        <p>A <strong>binary tree</strong> is a tree where every node has <em>at most two</em>
+          children, usually called the <strong>left child</strong> and
+          <strong>right child</strong>.</p>
+
+        <h3>Full Binary Tree</h3>
+        <p>Every node has either <strong>0 or 2</strong> children — never exactly 1.</p>
+        <pre><code>        A
+       / \
+      B   C
+     / \
+    D   E</code></pre>
+        <p>Here A and B have 2 children each, and C, D, E have 0 children — no node has just one
+          child, so this is a full binary tree.</p>
+
+        <h3>Complete Binary Tree</h3>
+        <p>Every level is <strong>completely filled</strong> except possibly the last level,
+          and the last level is filled <strong>from left to right</strong> with no gaps.</p>
+        <pre><code>        A
+       / \
+      B   C
+     / \  /
+    D  E F</code></pre>
+        <p>Level 2 (D, E, F) isn't full (only 3 of the possible 4 slots are used) but the filled
+          nodes are packed to the left with no gaps — so this is a complete binary tree.</p>
+
+        <div class="note-box">
+          <p><strong>Student tip:</strong> "full" is about <em>every node</em> having 0 or 2
+            children; "complete" is about <em>levels</em> being filled left-to-right. A tree can
+            be complete but not full, full but not complete, both, or neither.</p>
+        </div>
+
+        <h3>Extended Binary Tree (2-Tree)</h3>
+        <p>An extended binary tree is formed by adding special <strong>external nodes</strong>
+          (shown as squares) wherever a node is missing a child, so that every node ends up with
+          exactly 0 or 2 children — turning <em>any</em> binary tree into a full binary tree.
+          This is commonly used to represent expressions, where original nodes (circles) hold
+          operators/operands and external nodes (squares) act as placeholders.</p>
+        <pre><code>Original node with 1 child:        After extending:
+      A                                  A
+     /                                 / \
+    B                                 B   □   (□ = added external node)</code></pre>
+      </section>
+
+      <!-- 3. Array and linked representation -->
+      <section class="panel" id="binary-tree-rep">
+        <h2><span class="unit-tag">TREE</span> Array &amp; Linked Representation of Binary Trees</h2>
+
+        <h3>Array Representation</h3>
+        <p>Store the tree in an array such that for a node at index <span class="inline-code">i</span>
+          (1-based indexing):</p>
+        <ul>
+          <li>Left child is at index <span class="inline-code">2i</span></li>
+          <li>Right child is at index <span class="inline-code">2i + 1</span></li>
+          <li>Parent is at index <span class="inline-code">⌊i / 2⌋</span></li>
+        </ul>
+
+        <h3>Worked Example</h3>
+        <pre><code>        A (1)
+       /      \
+     B (2)    C (3)
+     /  \
+  D (4) E (5)</code></pre>
+        <table>
+          <tr><th>Index</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+          <tr><td>Value</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+        </table>
+        <p>Check: left child of B (index 2) = index 4 = D ✓. Right child of B = index 5 = E ✓.
+          Parent of D (index 4) = ⌊4/2⌋ = index 2 = B ✓.</p>
+
+        <div class="warn-box">
+          <p><strong>Limitation:</strong> array representation wastes a lot of space for
+            <em>skewed</em> trees (where most nodes have only one child), since many array
+            positions stay empty. It works best for complete binary trees.</p>
+        </div>
+
+        <h3>Linked Representation</h3>
+        <p>Each node is a separate object with pointers to its left and right children — this is
+          the more common and flexible representation, especially for trees that aren't complete.</p>
+        <pre><code>struct Node {
+    int data;
+    Node* left;
+    Node* right;
+};</code></pre>
+      </section>
+
+      <!-- 4. Traversal -->
+      <section class="panel" id="binary-tree-traversal">
+        <h2><span class="unit-tag">TREE</span> Traversing Binary Trees</h2>
+        <p>There are three classic ways to visit every node of a binary tree, differing only in
+          <em>when</em> the root is visited relative to its left and right subtrees.</p>
+
+        <h3>Inorder (Left → Root → Right)</h3>
+        <pre><code>function inorder(node):
+    if node == NULL: return
+    inorder(node.left)
+    print node.data
+    inorder(node.right)</code></pre>
+
+        <h3>Preorder (Root → Left → Right)</h3>
+        <pre><code>function preorder(node):
+    if node == NULL: return
+    print node.data
+    preorder(node.left)
+    preorder(node.right)</code></pre>
+
+        <h3>Postorder (Left → Right → Root)</h3>
+        <pre><code>function postorder(node):
+    if node == NULL: return
+    postorder(node.left)
+    postorder(node.right)
+    print node.data</code></pre>
+
+        <h3>Worked Example</h3>
+        <pre><code>        A
+       / \
+      B   C
+     / \
+    D   E</code></pre>
+        <table>
+          <tr><th>Traversal</th><th>Order Visited</th></tr>
+          <tr><td>Inorder</td><td>D, B, E, A, C</td></tr>
+          <tr><td>Preorder</td><td>A, B, D, E, C</td></tr>
+          <tr><td>Postorder</td><td>D, E, B, C, A</td></tr>
+        </table>
+
+        <div class="note-box">
+          <p><strong>Memory trick:</strong> the name tells you where the <em>root</em> falls —
+            "PRE" = root comes first, "POST" = root comes last, "IN" = root comes in-between left
+            and right.</p>
+        </div>
+      </section>
+
+      <!-- 5. Threaded binary trees -->
+      <section class="panel" id="threaded-binary-tree">
+        <h2><span class="unit-tag">TREE</span> Threaded Binary Trees</h2>
+        <p>In a normal binary tree, many <span class="inline-code">left</span>/
+          <span class="inline-code">right</span> pointers are <span class="inline-code">NULL</span>
+          (every leaf has two NULL pointers). A <strong>threaded binary tree</strong> reuses these
+          wasted NULL pointers as "threads" — shortcuts that point directly to the node's inorder
+          predecessor or successor, so you can traverse the tree <em>without recursion or a
+          stack</em>.</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> like leaving a bookmark thread in a book that
+            jumps you straight to "what comes next", instead of having to flip back to the table
+            of contents (the stack) every time.</p>
+        </div>
+
+        <h3>Single-Threaded vs Double-Threaded</h3>
+        <ul>
+          <li><strong>Single-threaded:</strong> only the NULL <span class="inline-code">right</span>
+            pointers are replaced with a thread to the inorder <em>successor</em>.</li>
+          <li><strong>Double-threaded:</strong> NULL <span class="inline-code">left</span> pointers
+            are also replaced with a thread to the inorder <em>predecessor</em>.</li>
+        </ul>
+
+        <h3>Diagram (Right-Threaded)</h3>
+        <pre><code>        B
+       / \
+      A   D
+         / \
+        C   E
+
+Inorder sequence: A, B, C, D, E
+
+Normal tree: A.right = NULL, C.right = NULL, E.right = NULL
+Threaded:    A.right --thread--> B   (A's inorder successor)
+             C.right --thread--> D   (C's inorder successor)
+             E.right --thread--> NULL (E is the last node, no successor)</code></pre>
+
+        <p>Each node also needs a boolean flag (often called <span class="inline-code">rightThread</span>)
+          to tell whether its right pointer is a real child link or just a thread, so the
+          traversal code knows the difference.</p>
+      </section>
+
+      <!-- 6. BST -->
+      <section class="panel" id="bst">
+        <h2><span class="unit-tag">TREE</span> Binary Search Tree (BST)</h2>
+        <p>A <strong>binary search tree</strong> is a binary tree with one extra rule that makes
+          searching fast:</p>
+        <ul>
+          <li>For every node, all values in its <strong>left</strong> subtree are
+            <strong>smaller</strong> than the node's value.</li>
+          <li>All values in its <strong>right</strong> subtree are
+            <strong>greater</strong> than the node's value.</li>
+          <li>Both the left and right subtrees must also be valid BSTs.</li>
+        </ul>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> like a phone book sorted alphabetically — at each
+            step you compare and decide to look "before" or "after", cutting your search space in
+            half each time, just like binary search on a sorted array.</p>
+        </div>
+
+        <h3>Example BST</h3>
+        <pre><code>        50
+       /  \
+      30    70
+     /  \   /  \
+   20   40 60   80</code></pre>
+        <p>Every left child is smaller and every right child is bigger than its parent — e.g.,
+          20 and 40 are both less than 30, and 30 itself is less than 50.</p>
+
+        <h3>Searching in a BST</h3>
+        <pre><code>function search(node, key):
+    if node == NULL or node.data == key:
+        return node
+    if key < node.data:
+        return search(node.left, key)
+    else:
+        return search(node.right, key)</code></pre>
+        <p>Searching for 60: compare with 50 (60 &gt; 50, go right) → compare with 70
+          (60 &lt; 70, go left) → compare with 60 (match found!) — only 3 comparisons instead of
+          checking all 7 nodes.</p>
+      </section>
+
+      <!-- 7. Insertion and deletion in BST -->
+      <section class="panel" id="bst-insert-delete">
+        <h2><span class="unit-tag">TREE</span> Insertion &amp; Deletion in BST</h2>
+
+        <h3>Insertion</h3>
+        <pre><code>function insert(node, key):
+    if node == NULL:
+        return createNode(key)
+    if key < node.data:
+        node.left = insert(node.left, key)
+    else if key > node.data:
+        node.right = insert(node.right, key)
+    return node    // key already exists: do nothing</code></pre>
+
+        <h3>Worked Example — Insert 50, 30, 70, 20, 40</h3>
+        <table>
+          <tr><th>Insert</th><th>Action</th><th>Tree shape</th></tr>
+          <tr><td>50</td><td>Tree empty → becomes root</td><td>50</td></tr>
+          <tr><td>30</td><td>30 &lt; 50 → goes left of 50</td><td>50(left:30)</td></tr>
+          <tr><td>70</td><td>70 &gt; 50 → goes right of 50</td><td>50(left:30, right:70)</td></tr>
+          <tr><td>20</td><td>20&lt;50→left, 20&lt;30→left of 30</td><td>30 now has left child 20</td></tr>
+          <tr><td>40</td><td>40&lt;50→left, 40&gt;30→right of 30</td><td>30 now has right child 40</td></tr>
+        </table>
+        <p>Final tree: 50 with left subtree (30 with children 20, 40) and right child 70.</p>
+
+        <h3>Deletion — Three Cases</h3>
+        <ul>
+          <li><strong>Leaf node</strong> (no children): simply remove it.</li>
+          <li><strong>One child:</strong> replace the node with its only child.</li>
+          <li><strong>Two children:</strong> replace the node's value with its
+            <strong>inorder successor</strong> (smallest value in the right subtree), then delete
+            that successor node from the right subtree.</li>
+        </ul>
+
+        <pre><code>function deleteNode(node, key):
+    if node == NULL: return NULL
+    if key < node.data:
+        node.left = deleteNode(node.left, key)
+    else if key > node.data:
+        node.right = deleteNode(node.right, key)
+    else:
+        if node.left == NULL:
+            return node.right       // 0 or 1 child (right side)
+        if node.right == NULL:
+            return node.left        // 1 child (left side)
+        // two children: find inorder successor (min of right subtree)
+        successor = node.right
+        while successor.left != NULL:
+            successor = successor.left
+        node.data = successor.data
+        node.right = deleteNode(node.right, successor.data)
+    return node</code></pre>
+
+        <h3>Worked Example — Delete 30 (Two Children)</h3>
+        <pre><code>Before:                  After:
+        50                      50
+       /  \                    /  \
+     30    70                40    70
+    /  \   /  \              /     /  \
+  20   40 60   80           20   60    80</code></pre>
+        <p>30 has two children (20, 40). Its inorder successor is 40 (smallest value in 30's right
+          subtree). So 30's value is replaced with 40, and the original node holding 40 is removed.</p>
+      </section>
+
+      <!-- 8. AVL trees and rotations -->
+      <section class="panel" id="avl-rotations">
+        <h2><span class="unit-tag">TREE</span> AVL Trees &amp; Rotations</h2>
+        <p>An <strong>AVL tree</strong> is a self-balancing BST. After every insertion or
+          deletion, it automatically rebalances itself so the tree never becomes too skewed —
+          this keeps search, insert, and delete operations at <strong>O(log n)</strong>, even in
+          the worst case.</p>
+
+        <h3>Balance Factor</h3>
+        <p><span class="inline-code">Balance Factor = height(left subtree) − height(right subtree)</span></p>
+        <p>An AVL tree requires every node's balance factor to be <strong>−1, 0, or +1</strong>.
+          If any node's balance factor becomes −2 or +2 after an operation, a rotation is needed
+          to restore balance.</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> a tightrope walker constantly making tiny
+            adjustments to stay balanced — an AVL tree makes a tiny structural adjustment
+            (a rotation) the moment it starts leaning too far to one side.</p>
+        </div>
+
+        <h3>The Four Rotation Cases</h3>
+        <table>
+          <tr><th>Case</th><th>When it happens</th><th>Fix</th></tr>
+          <tr><td>LL (Left-Left)</td><td>Inserted into left subtree of left child</td><td>Single Right Rotation</td></tr>
+          <tr><td>RR (Right-Right)</td><td>Inserted into right subtree of right child</td><td>Single Left Rotation</td></tr>
+          <tr><td>LR (Left-Right)</td><td>Inserted into right subtree of left child</td><td>Left Rotation, then Right Rotation</td></tr>
+          <tr><td>RL (Right-Left)</td><td>Inserted into left subtree of right child</td><td>Right Rotation, then Left Rotation</td></tr>
+        </table>
+
+        <h3>Single Right Rotation (LL Case)</h3>
+        <pre><code>Unbalanced (BF of 30 = +2):        After Right Rotation:
+        30                                  20
+       /                                  /    \
+      20                                10      30
+     /
+    10</code></pre>
+        <pre><code>function rotateRight(y):
+    x = y.left
+    T = x.right
+    x.right = y
+    y.left = T
+    return x      // x is the new root of this subtree</code></pre>
+
+        <h3>Single Left Rotation (RR Case)</h3>
+        <pre><code>Unbalanced (BF of 10 = -2):        After Left Rotation:
+    10                                      20
+      \                                   /    \
+      20                                10      30
+        \
+        30</code></pre>
+        <pre><code>function rotateLeft(x):
+    y = x.right
+    T = y.left
+    y.left = x
+    x.right = T
+    return y      // y is the new root of this subtree</code></pre>
+
+        <h3>LR and RL Cases</h3>
+        <p>These need <strong>two</strong> rotations because a single rotation alone wouldn't fix
+          the imbalance:</p>
+        <ul>
+          <li><strong>LR:</strong> rotate the left child <em>left</em> first, then rotate the
+            unbalanced node <em>right</em>.</li>
+          <li><strong>RL:</strong> rotate the right child <em>right</em> first, then rotate the
+            unbalanced node <em>left</em>.</li>
+        </ul>
+      </section>
+
+      <!-- 9. Insertion and deletion in AVL -->
+      <section class="panel" id="avl-insert-delete">
+        <h2><span class="unit-tag">TREE</span> Insertion &amp; Deletion in AVL Trees</h2>
+
+        <h3>Insertion Algorithm</h3>
+        <pre><code>function insertAVL(node, key):
+    if node == NULL:
+        return createNode(key)
+    if key < node.data:
+        node.left = insertAVL(node.left, key)
+    else if key > node.data:
+        node.right = insertAVL(node.right, key)
+    else:
+        return node    // duplicates not allowed
+
+    updateHeight(node)
+    balance = getBalanceFactor(node)
+
+    if balance > 1 and key < node.left.data:        // LL
+        return rotateRight(node)
+    if balance < -1 and key > node.right.data:       // RR
+        return rotateLeft(node)
+    if balance > 1 and key > node.left.data:         // LR
+        node.left = rotateLeft(node.left)
+        return rotateRight(node)
+    if balance < -1 and key < node.right.data:       // RL
+        node.right = rotateRight(node.right)
+        return rotateLeft(node)
+
+    return node    // already balanced</code></pre>
+
+        <h3>Worked Example — Insert 10, 20, 30</h3>
+        <pre><code>Insert 10:           Insert 20:           Insert 30 → triggers RR case:
+  10                   10                    10                  20
+                         \                     \                /  \
+                         20                     20      →      10   30
+                                                   \
+                                                    30</code></pre>
+        <p>After inserting 30, node 10 has balance factor −2 (right-heavy by 2), and 30 is in the
+          right subtree of the right child — an RR case. A single left rotation on node 10 fixes
+          it, producing the balanced tree shown above with 20 as the new root.</p>
+
+        <h3>Deletion Algorithm</h3>
+        <p>Deletion in an AVL tree works like normal <strong>BST deletion</strong> (the three
+          cases: leaf, one child, two children), but after removing the node, you must walk back
+          up the tree, update heights, and check the balance factor at <em>every ancestor</em> —
+          applying the same four rotation cases (LL, RR, LR, RL) wherever an imbalance appears.</p>
+
+        <pre><code>function deleteAVL(node, key):
+    if node == NULL: return NULL
+
+    if key < node.data:
+        node.left = deleteAVL(node.left, key)
+    else if key > node.data:
+        node.right = deleteAVL(node.right, key)
+    else:
+        // standard BST deletion (leaf / one child / two children)
+        if node.left == NULL: return node.right
+        if node.right == NULL: return node.left
+        successor = minValueNode(node.right)
+        node.data = successor.data
+        node.right = deleteAVL(node.right, successor.data)
+
+    updateHeight(node)
+    balance = getBalanceFactor(node)
+
+    // re-check and rotate, just like in insertion
+    if balance > 1 and getBalanceFactor(node.left) >= 0:
+        return rotateRight(node)
+    if balance > 1 and getBalanceFactor(node.left) < 0:
+        node.left = rotateLeft(node.left)
+        return rotateRight(node)
+    if balance < -1 and getBalanceFactor(node.right) <= 0:
+        return rotateLeft(node)
+    if balance < -1 and getBalanceFactor(node.right) > 0:
+        node.right = rotateRight(node.right)
+        return rotateLeft(node)
+
+    return node</code></pre>
+
+        <div class="warn-box">
+          <p><strong>Common mistake:</strong> students often rebalance only the node where the
+            deletion happened. In AVL deletion, removing one node can unbalance
+            <em>any ancestor</em> up to the root, so you must check and fix the balance factor at
+            every level on the way back up.</p>
+        </div>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Search</div><div class="value">O(log n)</div></div>
+          <div class="complexity-card"><div class="label">Insert</div><div class="value">O(log n)</div></div>
+          <div class="complexity-card"><div class="label">Delete</div><div class="value">O(log n)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(n)</div></div>
+        </div>
+      </section>
+
+      <div style="text-align:center; margin-top:10px;">
+        <a href="Datastructures.html" class="btn">← Back to Units</a>
+        <a href="DatastructuresLab.html" class="btn">Practice in Lab →</a>
+      </div>
+
     </div>
   </div>
+  </div>
+  <!-- =================== END UNIT 4 =================== -->
   <div class="unit-panel" id="unit5">
     <div class="panel coming-soon">
       <span class="eyebrow">Unit 5</span>
