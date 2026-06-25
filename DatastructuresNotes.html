@@ -406,9 +406,6 @@ footer{
     <button class="unit-tab" data-unit="unit3">Unit3 Notes</button>
     <button class="unit-tab" data-unit="unit4">Unit4 Notes</button>
     <button class="unit-tab" data-unit="unit5">Unit5 Notes</button>
-    <button class="unit-tab" data-unit="unit6">Unit6 Notes</button>
-    <button class="unit-tab" data-unit="unit7">Unit7 Notes</button>
-    <button class="unit-tab" data-unit="unit8">Unit8 Notes</button>
   </div>
 
   <!-- ===================== UNIT 1 ===================== -->
@@ -927,13 +924,484 @@ function partition(arr, low, high):
   <!-- =================== END UNIT 1 =================== -->
 
   <!-- Placeholder panels for upcoming units -->
+  <!-- ===================== UNIT 2 ===================== -->
   <div class="unit-panel" id="unit2">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 2</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 2 notes are being prepared and will appear here once ready.</p>
+  <div class="layout">
+
+    <!-- Table of Contents -->
+    <aside class="panel toc">
+      <h4>On this page</h4>
+      <ol>
+        <li><a href="#stack-rep">Array Representation of Stack</a></li>
+        <li><a href="#stack-ops">Push &amp; Pop Operations</a></li>
+        <li><a href="#infix-prefix-postfix">Infix → Prefix &amp; Postfix Conversion</a></li>
+        <li><a href="#eval-postfix-prefix">Evaluating Postfix &amp; Prefix Expressions</a></li>
+        <li><a href="#stack-applications">Other Applications of Stack</a></li>
+        <li><a href="#recursion">Recursion</a></li>
+        <li><a href="#towers-of-hanoi">Towers of Hanoi</a></li>
+        <li><a href="#queue-rep">Array Representation of Queue</a></li>
+        <li><a href="#queue-ops">Queue Operations: Insert, Delete, Full, Empty</a></li>
+        <li><a href="#circular-queue">Circular Queue</a></li>
+        <li><a href="#queue-applications">Applications of Queues</a></li>
+      </ol>
+    </aside>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- 1. Stack - Array Representation -->
+      <section class="panel" id="stack-rep">
+        <h2><span class="unit-tag">STACK</span> Array Representation &amp; Implementation</h2>
+        <p>A <strong>stack</strong> is a linear data structure that follows
+          <strong>LIFO (Last In, First Out)</strong> order — the element added last is the
+          first one removed. Think of a stack of plates: you place a new plate on top, and
+          you also pick up the topmost plate first.</p>
+
+        <h3>Array Representation</h3>
+        <p>A stack can be implemented using a one-dimensional array <span class="inline-code">stack[0...n-1]</span>
+          along with a variable <span class="inline-code">top</span> that always points to the
+          index of the topmost element.</p>
+        <ul>
+          <li><span class="inline-code">top = -1</span> means the stack is <strong>empty</strong>.</li>
+          <li><span class="inline-code">top = n - 1</span> means the stack is <strong>full</strong>
+            (n = size of the array).</li>
+        </ul>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> imagine a stack of bangles on your wrist, or a
+            pile of books on a table — you can only add or remove from the top, never from the
+            middle or bottom.</p>
+        </div>
+
+        <pre><code>// Declaration
+int stack[MAX];
+int top = -1;</code></pre>
+      </section>
+
+      <!-- 2. Push and Pop -->
+      <section class="panel" id="stack-ops">
+        <h2><span class="unit-tag">STACK</span> Operations: Push &amp; Pop</h2>
+
+        <h3>Push (Insert)</h3>
+        <p>Adds a new element to the top of the stack. Before pushing, check for
+          <strong>stack overflow</strong> (stack already full).</p>
+        <pre><code>function push(stack, top, value):
+    if top == MAX - 1:
+        print "Stack Overflow"
+        return
+    top = top + 1
+    stack[top] = value</code></pre>
+
+        <h3>Pop (Delete)</h3>
+        <p>Removes and returns the topmost element. Before popping, check for
+          <strong>stack underflow</strong> (stack already empty).</p>
+        <pre><code>function pop(stack, top):
+    if top == -1:
+        print "Stack Underflow"
+        return
+    value = stack[top]
+    top = top - 1
+    return value</code></pre>
+
+        <h3>Worked Example</h3>
+        <p>Let <span class="inline-code">MAX = 5</span> and the stack starts empty
+          (<span class="inline-code">top = -1</span>):</p>
+        <table>
+          <tr><th>Operation</th><th>Stack (bottom → top)</th><th>top</th></tr>
+          <tr><td>push(10)</td><td>10</td><td>0</td></tr>
+          <tr><td>push(20)</td><td>10, 20</td><td>1</td></tr>
+          <tr><td>push(30)</td><td>10, 20, 30</td><td>2</td></tr>
+          <tr><td>pop() → returns 30</td><td>10, 20</td><td>1</td></tr>
+          <tr><td>push(40)</td><td>10, 20, 40</td><td>2</td></tr>
+          <tr><td>pop() → returns 40</td><td>10, 20</td><td>1</td></tr>
+        </table>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Push</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Pop</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Peek/Top</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(n)</div></div>
+        </div>
+      </section>
+
+      <!-- 3. Infix to Prefix/Postfix -->
+      <section class="panel" id="infix-prefix-postfix">
+        <h2><span class="unit-tag">APPLICATION</span> Infix → Prefix &amp; Postfix Conversion</h2>
+        <p>Stacks are used to convert human-readable <strong>infix</strong> expressions
+          (e.g., <span class="inline-code">A + B</span>) into <strong>prefix</strong>
+          (<span class="inline-code">+ A B</span>) or <strong>postfix</strong>
+          (<span class="inline-code">A B +</span>) form, which computers evaluate more easily
+          without needing parentheses or precedence rules at evaluation time.</p>
+
+        <table>
+          <tr><th>Form</th><th>Operator Position</th><th>Example for A + B * C</th></tr>
+          <tr><td>Infix</td><td>Between operands</td><td>A + B * C</td></tr>
+          <tr><td>Prefix</td><td>Before operands</td><td>+ A * B C</td></tr>
+          <tr><td>Postfix</td><td>After operands</td><td>A B C * +</td></tr>
+        </table>
+
+        <h3>Infix → Postfix Algorithm</h3>
+        <pre><code>function infixToPostfix(expression):
+    initialize empty stack for operators
+    initialize empty string "result"
+
+    for each character ch in expression:
+        if ch is an operand (letter/digit):
+            append ch to result
+        else if ch == '(':
+            push ch onto stack
+        else if ch == ')':
+            while stack top != '(':
+                pop operator, append to result
+            pop the '(' and discard
+        else: // ch is an operator
+            while stack is not empty and
+                  precedence(stack.top()) >= precedence(ch):
+                pop operator, append to result
+            push ch onto stack
+
+    while stack is not empty:
+        pop operator, append to result
+
+    return result</code></pre>
+
+        <h3>Worked Example — Convert <span class="inline-code">A + B * C</span> to Postfix</h3>
+        <table>
+          <tr><th>Symbol</th><th>Action</th><th>Stack</th><th>Output (Postfix)</th></tr>
+          <tr><td>A</td><td>Operand → output</td><td>empty</td><td>A</td></tr>
+          <tr><td>+</td><td>Push (stack empty)</td><td>+</td><td>A</td></tr>
+          <tr><td>B</td><td>Operand → output</td><td>+</td><td>A B</td></tr>
+          <tr><td>*</td><td>Higher precedence than + → push</td><td>+ *</td><td>A B</td></tr>
+          <tr><td>C</td><td>Operand → output</td><td>+ *</td><td>A B C</td></tr>
+          <tr><td>end</td><td>Pop remaining: *, +</td><td>empty</td><td>A B C * +</td></tr>
+        </table>
+
+        <div class="note-box">
+          <p><strong>Student tip:</strong> notice how <span class="inline-code">*</span> (higher
+            precedence) gets evaluated first in the postfix string — it appears right before the
+            <span class="inline-code">+</span>, matching the usual "multiplication before
+            addition" rule, but without needing any parentheses.</p>
+        </div>
+
+        <h3>Infix → Prefix (Shortcut Method)</h3>
+        <ol>
+          <li>Reverse the infix expression (swap every <span class="inline-code">(</span> with
+            <span class="inline-code">)</span> and vice versa).</li>
+          <li>Convert the reversed expression to postfix using the algorithm above.</li>
+          <li>Reverse the resulting postfix string to get the prefix expression.</li>
+        </ol>
+        <p>Example: <span class="inline-code">A + B * C</span> → reversed:
+          <span class="inline-code">C * B + A</span> → postfix of reversed:
+          <span class="inline-code">C B * A +</span> → reverse it:
+          <span class="inline-code">+ A * B C</span> (the prefix form).</p>
+      </section>
+
+      <!-- 4. Evaluating Postfix/Prefix -->
+      <section class="panel" id="eval-postfix-prefix">
+        <h2><span class="unit-tag">APPLICATION</span> Evaluating Postfix &amp; Prefix Expressions</h2>
+
+        <h3>Evaluating Postfix Using a Stack</h3>
+        <pre><code>function evaluatePostfix(expression):
+    initialize empty stack
+
+    for each token in expression:
+        if token is an operand:
+            push token onto stack
+        else: // token is an operator
+            b = pop()
+            a = pop()
+            result = a (token) b   // e.g., a + b, a * b
+            push result
+
+    return pop()   // final answer</code></pre>
+
+        <h3>Worked Example — Evaluate <span class="inline-code">5 3 4 * +</span></h3>
+        <table>
+          <tr><th>Token</th><th>Action</th><th>Stack (bottom → top)</th></tr>
+          <tr><td>5</td><td>Push</td><td>5</td></tr>
+          <tr><td>3</td><td>Push</td><td>5, 3</td></tr>
+          <tr><td>4</td><td>Push</td><td>5, 3, 4</td></tr>
+          <tr><td>*</td><td>Pop 4, Pop 3 → 3*4=12 → Push 12</td><td>5, 12</td></tr>
+          <tr><td>+</td><td>Pop 12, Pop 5 → 5+12=17 → Push 17</td><td>17</td></tr>
+        </table>
+        <p>Final result = <strong>17</strong>, which matches the infix expression
+          <span class="inline-code">5 + (3 * 4)</span> = 17.</p>
+
+        <h3>Evaluating Prefix Using a Stack</h3>
+        <p>Scan the expression <strong>right to left</strong>. If you see an operand, push it.
+          If you see an operator, pop two operands — the <em>first</em> pop is the left operand
+          and the <em>second</em> pop is the right operand (order matters for subtraction and
+          division).</p>
+        <pre><code>function evaluatePrefix(expression):
+    initialize empty stack
+
+    for each token in expression, scanned right to left:
+        if token is an operand:
+            push token onto stack
+        else:
+            a = pop()   // left operand
+            b = pop()   // right operand
+            result = a (token) b
+            push result
+
+    return pop()</code></pre>
+      </section>
+
+      <!-- 5. Other Stack Applications -->
+      <section class="panel" id="stack-applications">
+        <h2><span class="unit-tag">APPLICATION</span> Other Applications of Stack</h2>
+        <ul>
+          <li><strong>Function call management:</strong> every function call is pushed onto the
+            <em>call stack</em>; when the function returns, its frame is popped — this is exactly
+            how recursion works internally.</li>
+          <li><strong>Balanced parentheses checking:</strong> push opening brackets, pop when a
+            matching closing bracket appears; if the stack isn't empty (or a mismatch occurs) at
+            the end, the expression is unbalanced.</li>
+          <li><strong>Undo/Redo in editors:</strong> each action is pushed onto an "undo stack";
+            pressing Ctrl+Z pops the most recent action.</li>
+          <li><strong>Browser back button:</strong> visited pages are pushed onto a stack; "Back"
+            pops the most recently visited page.</li>
+        </ul>
+      </section>
+
+      <!-- 6. Recursion -->
+      <section class="panel" id="recursion">
+        <h2><span class="unit-tag">STACK</span> Recursion</h2>
+        <p><strong>Recursion</strong> is when a function calls itself, directly or indirectly, to
+          solve smaller instances of the same problem. Every recursive call is pushed onto the
+          <strong>system (call) stack</strong>; when a call returns, it is popped.</p>
+
+        <h3>Two Essential Parts</h3>
+        <ul>
+          <li><strong>Base case:</strong> the condition that stops the recursion (prevents
+            infinite calls).</li>
+          <li><strong>Recursive case:</strong> the function calling itself with a smaller/simpler
+            input, moving toward the base case.</li>
+        </ul>
+
+        <h3>Student-Friendly Example — Factorial</h3>
+        <pre><code>function factorial(n):
+    if n == 0:           // base case
+        return 1
+    return n * factorial(n - 1)   // recursive case</code></pre>
+
+        <p>Tracing <span class="inline-code">factorial(4)</span> using the call stack:</p>
+        <pre><code>factorial(4)
+ → 4 * factorial(3)
+       → 3 * factorial(2)
+             → 2 * factorial(1)
+                   → 1 * factorial(0)
+                         → returns 1   (base case hit)
+                   ← returns 1 * 1 = 1
+             ← returns 2 * 1 = 2
+       ← returns 3 * 2 = 6
+ ← returns 4 * 6 = 24</code></pre>
+        <p>Each call waits on the stack until the call above it returns — just like the stack of
+          plates: the innermost call (<span class="inline-code">factorial(0)</span>) finishes
+          first, just as the topmost plate is removed first.</p>
+
+        <div class="warn-box">
+          <p><strong>Common mistake:</strong> forgetting the base case (or writing a condition
+            that's never reached) causes <em>infinite recursion</em>, which eventually crashes the
+            program with a "stack overflow" — the call stack literally runs out of space.</p>
+        </div>
+      </section>
+
+      <!-- 7. Towers of Hanoi -->
+      <section class="panel" id="towers-of-hanoi">
+        <h2><span class="unit-tag">STACK</span> Towers of Hanoi Problem</h2>
+        <p>Classic recursion example: move <strong>n disks</strong> from a source peg
+          (<strong>A</strong>) to a destination peg (<strong>C</strong>), using an auxiliary peg
+          (<strong>B</strong>), under these rules:</p>
+        <ul>
+          <li>Only one disk can be moved at a time.</li>
+          <li>Only the topmost disk of any peg can be moved.</li>
+          <li>A larger disk can never be placed on top of a smaller disk.</li>
+        </ul>
+
+        <h3>Recursive Idea</h3>
+        <p>To move <em>n</em> disks from A to C (using B as auxiliary):</p>
+        <ol>
+          <li>Move the top <span class="inline-code">n - 1</span> disks from A to B (using C as
+            auxiliary).</li>
+          <li>Move the largest (n-th) disk directly from A to C.</li>
+          <li>Move the <span class="inline-code">n - 1</span> disks from B to C (using A as
+            auxiliary).</li>
+        </ol>
+
+        <pre><code>function towerOfHanoi(n, source, auxiliary, destination):
+    if n == 0:
+        return
+    towerOfHanoi(n - 1, source, destination, auxiliary)
+    print "Move disk", n, "from", source, "to", destination
+    towerOfHanoi(n - 1, auxiliary, source, destination)</code></pre>
+
+        <h3>Worked Example — 3 Disks (A → C, via B)</h3>
+        <pre><code>Move disk 1 from A to C
+Move disk 2 from A to B
+Move disk 1 from C to B
+Move disk 3 from A to C
+Move disk 1 from B to A
+Move disk 2 from B to C
+Move disk 1 from A to C</code></pre>
+        <p>It takes exactly <strong>7 moves</strong> for 3 disks — in general, the minimum number
+          of moves required is <span class="inline-code">2ⁿ - 1</span>.</p>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Time</div><div class="value">O(2ⁿ)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(n)</div></div>
+        </div>
+        <p>Space is O(n) because the recursion depth (and hence the call stack height) is at most
+          <em>n</em> at any point in time.</p>
+      </section>
+
+      <!-- 8. Queue - Array Representation -->
+      <section class="panel" id="queue-rep">
+        <h2><span class="unit-tag">QUEUE</span> Array Representation &amp; Implementation</h2>
+        <p>A <strong>queue</strong> is a linear data structure that follows
+          <strong>FIFO (First In, First Out)</strong> order — the element added first is the
+          first one removed. Think of a line of people waiting to buy movie tickets: whoever
+          joined the line first gets served first.</p>
+
+        <h3>Array Representation</h3>
+        <p>A simple queue can be implemented using an array <span class="inline-code">queue[0...n-1]</span>
+          with two pointers:</p>
+        <ul>
+          <li><span class="inline-code">front</span> — index of the first element (next to be
+            removed).</li>
+          <li><span class="inline-code">rear</span> — index of the last element (most recently
+            added).</li>
+        </ul>
+        <p>Initially, <span class="inline-code">front = -1</span> and
+          <span class="inline-code">rear = -1</span> indicate an empty queue.</p>
+
+        <pre><code>// Declaration
+int queue[MAX];
+int front = -1, rear = -1;</code></pre>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> a queue at a bank counter, or print jobs waiting
+            to come out of a printer — the first job sent is the first one printed.</p>
+        </div>
+      </section>
+
+      <!-- 9. Queue operations -->
+      <section class="panel" id="queue-ops">
+        <h2><span class="unit-tag">QUEUE</span> Operations: Insert, Delete, Full &amp; Empty</h2>
+
+        <h3>Insert (Enqueue)</h3>
+        <pre><code>function enqueue(queue, value):
+    if rear == MAX - 1:
+        print "Queue Full"
+        return
+    if front == -1:
+        front = 0
+    rear = rear + 1
+    queue[rear] = value</code></pre>
+
+        <h3>Delete (Dequeue)</h3>
+        <pre><code>function dequeue(queue):
+    if front == -1 or front > rear:
+        print "Queue Empty"
+        return
+    value = queue[front]
+    front = front + 1
+    return value</code></pre>
+
+        <h3>Checking Full / Empty</h3>
+        <ul>
+          <li><strong>Empty:</strong> <span class="inline-code">front == -1</span> (or
+            <span class="inline-code">front &gt; rear</span> after some dequeues).</li>
+          <li><strong>Full</strong> (simple/linear queue): <span class="inline-code">rear == MAX - 1</span>.</li>
+        </ul>
+
+        <h3>Worked Example</h3>
+        <p>Let <span class="inline-code">MAX = 5</span>, queue starts empty:</p>
+        <table>
+          <tr><th>Operation</th><th>Queue (front → rear)</th><th>front</th><th>rear</th></tr>
+          <tr><td>enqueue(10)</td><td>10</td><td>0</td><td>0</td></tr>
+          <tr><td>enqueue(20)</td><td>10, 20</td><td>0</td><td>1</td></tr>
+          <tr><td>enqueue(30)</td><td>10, 20, 30</td><td>0</td><td>2</td></tr>
+          <tr><td>dequeue() → returns 10</td><td>20, 30</td><td>1</td><td>2</td></tr>
+          <tr><td>dequeue() → returns 20</td><td>30</td><td>2</td><td>2</td></tr>
+        </table>
+
+        <div class="warn-box">
+          <p><strong>Limitation of a simple (linear) queue:</strong> once <span class="inline-code">rear</span>
+            reaches <span class="inline-code">MAX - 1</span>, the queue is reported "full" even if
+            front slots (0 and 1 in the example above) are empty and unused — this wasted space is
+            exactly what the circular queue fixes.</p>
+        </div>
+      </section>
+
+      <!-- 10. Circular Queue -->
+      <section class="panel" id="circular-queue">
+        <h2><span class="unit-tag">QUEUE</span> Circular Queue</h2>
+        <p>A <strong>circular queue</strong> connects the last position of the array back to the
+          first position, forming a logical circle. This reuses the empty slots left behind by
+          dequeued elements, instead of wasting them like a simple queue does.</p>
+
+        <h3>Key Formulas</h3>
+        <pre><code>front = (front + 1) mod MAX     // after dequeue
+rear  = (rear + 1) mod MAX      // after enqueue</code></pre>
+
+        <h3>Full / Empty Conditions</h3>
+        <ul>
+          <li><strong>Empty:</strong> <span class="inline-code">front == -1</span></li>
+          <li><strong>Full:</strong> <span class="inline-code">(rear + 1) mod MAX == front</span></li>
+        </ul>
+
+        <h3>Worked Example — Circular Queue of size 5</h3>
+        <p>Picture 5 slots arranged in a circle: 0 → 1 → 2 → 3 → 4 → back to 0.</p>
+        <table>
+          <tr><th>Operation</th><th>Effect</th><th>front</th><th>rear</th></tr>
+          <tr><td>enqueue(A)</td><td>Slot 0 = A</td><td>0</td><td>0</td></tr>
+          <tr><td>enqueue(B)</td><td>Slot 1 = B</td><td>0</td><td>1</td></tr>
+          <tr><td>enqueue(C)</td><td>Slot 2 = C</td><td>0</td><td>2</td></tr>
+          <tr><td>dequeue() → A</td><td>Slot 0 freed</td><td>1</td><td>2</td></tr>
+          <tr><td>enqueue(D)</td><td>Slot 3 = D</td><td>1</td><td>3</td></tr>
+          <tr><td>enqueue(E)</td><td>Slot 4 = E</td><td>1</td><td>4</td></tr>
+          <tr><td>enqueue(F)</td><td>Wraps around! Slot 0 = F</td><td>1</td><td>0</td></tr>
+        </table>
+        <p>Notice how <span class="inline-code">F</span> was placed back into slot 0 — the slot
+          freed earlier by <span class="inline-code">A</span> — because
+          <span class="inline-code">rear = (4 + 1) mod 5 = 0</span>. This is the "circular" part
+          in action.</p>
+
+        <div class="note-box">
+          <p><strong>Real-life analogy:</strong> a roundabout (traffic circle) with 5 parking
+            bays — cars can park in any bay that becomes free, even if it's "behind" where the
+            last car parked, because the road loops back around.</p>
+        </div>
+      </section>
+
+      <!-- 11. Queue Applications -->
+      <section class="panel" id="queue-applications">
+        <h2><span class="unit-tag">QUEUE</span> Applications of Queues</h2>
+        <ul>
+          <li><strong>CPU/process scheduling:</strong> processes waiting for the CPU are held in a
+            ready queue and served in the order they arrive (e.g., round-robin scheduling, which
+            uses a circular queue).</li>
+          <li><strong>Printer/spooler queue:</strong> print jobs are queued and printed in the
+            order they were submitted.</li>
+          <li><strong>Breadth-First Search (BFS):</strong> uses a queue to visit nodes of a graph
+            or tree level by level.</li>
+          <li><strong>Handling requests on a single shared resource:</strong> e.g., customer
+            service call centers, where calls are answered in the order received.</li>
+          <li><strong>Buffering data streams:</strong> e.g., keystrokes typed faster than they can
+            be processed, or video streaming buffers.</li>
+        </ul>
+      </section>
+
+      <div style="text-align:center; margin-top:10px;">
+        <a href="Datastructures.html" class="btn">← Back to Units</a>
+        <a href="DatastructuresLab.html" class="btn">Practice in Lab →</a>
+      </div>
+
     </div>
   </div>
+  </div>
+  <!-- =================== END UNIT 2 =================== -->
   <div class="unit-panel" id="unit3">
     <div class="panel coming-soon">
       <span class="eyebrow">Unit 3</span>
@@ -953,27 +1421,6 @@ function partition(arr, low, high):
       <span class="eyebrow">Unit 5</span>
       <h3>Notes coming soon</h3>
       <p>Unit 5 notes are being prepared and will appear here once ready.</p>
-    </div>
-  </div>
-  <div class="unit-panel" id="unit6">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 6</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 6 notes are being prepared and will appear here once ready.</p>
-    </div>
-  </div>
-  <div class="unit-panel" id="unit7">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 7</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 7 notes are being prepared and will appear here once ready.</p>
-    </div>
-  </div>
-  <div class="unit-panel" id="unit8">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 8</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 8 notes are being prepared and will appear here once ready.</p>
     </div>
   </div>
 
