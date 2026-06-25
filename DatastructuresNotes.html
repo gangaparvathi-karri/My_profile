@@ -321,6 +321,57 @@ footer{
   .toc{ position:relative; top:0; }
   .content section{ padding:22px 18px; }
 }
+
+/* Unit tabs */
+.unit-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:24px 0 32px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:0;
+}
+.unit-tab{
+  font-family:var(--mono);
+  font-size:0.84rem;
+  color:var(--text-dim);
+  background:transparent;
+  border:1px solid transparent;
+  border-bottom:none;
+  padding:10px 18px;
+  border-radius:10px 10px 0 0;
+  cursor:pointer;
+  transition:color 0.15s ease, background 0.15s ease;
+}
+.unit-tab:hover{ color:var(--teal); }
+.unit-tab.active{
+  color:var(--teal);
+  background:rgba(45,212,191,0.08);
+  border-color:var(--line);
+  position:relative;
+}
+.unit-tab.active::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-1px;
+  height:1px;
+  background:var(--bg);
+}
+.unit-tab[disabled]{
+  cursor:not-allowed;
+  opacity:0.45;
+}
+
+.unit-panel{ display:none; }
+.unit-panel.active{ display:block; }
+
+.coming-soon{
+  text-align:center;
+  padding:60px 24px;
+  color:var(--text-dim);
+}
+.coming-soon .eyebrow{ justify-content:center; display:flex; }
+.coming-soon h3{ color:var(--text); margin:6px 0 8px; }
 </style>
 </head>
 <body>
@@ -348,6 +399,20 @@ footer{
       analysis, and code outlines for each topic.</p>
   </div>
 
+  <!-- Unit Tabs -->
+  <div class="unit-tabs" id="unitTabs">
+    <button class="unit-tab active" data-unit="unit1">Unit1 Notes</button>
+    <button class="unit-tab" data-unit="unit2">Unit2 Notes</button>
+    <button class="unit-tab" data-unit="unit3">Unit3 Notes</button>
+    <button class="unit-tab" data-unit="unit4">Unit4 Notes</button>
+    <button class="unit-tab" data-unit="unit5">Unit5 Notes</button>
+    <button class="unit-tab" data-unit="unit6">Unit6 Notes</button>
+    <button class="unit-tab" data-unit="unit7">Unit7 Notes</button>
+    <button class="unit-tab" data-unit="unit8">Unit8 Notes</button>
+  </div>
+
+  <!-- ===================== UNIT 1 ===================== -->
+  <div class="unit-panel active" id="unit1">
   <div class="layout">
 
     <!-- Table of Contents -->
@@ -858,10 +923,88 @@ function partition(arr, low, high):
 
     </div>
   </div>
+  </div>
+  <!-- =================== END UNIT 1 =================== -->
+
+  <!-- Placeholder panels for upcoming units -->
+  <div class="unit-panel" id="unit2">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 2</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 2 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
+  <div class="unit-panel" id="unit3">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 3</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 3 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
+  <div class="unit-panel" id="unit4">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 4</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 4 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
+  <div class="unit-panel" id="unit5">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 5</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 5 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
+  <div class="unit-panel" id="unit6">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 6</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 6 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
+  <div class="unit-panel" id="unit7">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 7</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 7 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
+  <div class="unit-panel" id="unit8">
+    <div class="panel coming-soon">
+      <span class="eyebrow">Unit 8</span>
+      <h3>Notes coming soon</h3>
+      <p>Unit 8 notes are being prepared and will appear here once ready.</p>
+    </div>
+  </div>
 
 </main>
 
 <footer>&copy; 2026 Ganga Parvathi · Learning Portal</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.unit-tab');
+  const panels = document.querySelectorAll('.unit-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-unit');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      panels.forEach(p => p.classList.toggle('active', p.id === target));
+
+      history.replaceState(null, '', '#' + target);
+    });
+  });
+
+  // Open the correct tab if the page is loaded with a #unitN hash
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    const matchTab = document.querySelector('.unit-tab[data-unit="' + hash + '"]');
+    if (matchTab) matchTab.click();
+  });
+</script>
 
 </body>
 </html>
