@@ -2388,13 +2388,279 @@ Threaded:    A.right --thread--> B   (A's inorder successor)
   </div>
   </div>
   <!-- =================== END UNIT 4 =================== -->
-  <div class="unit-panel" id="unit5">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 5</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 5 notes are being prepared and will appear here once ready.</p>
+  <!-- ===================== UNIT 5 ===================== -->
+<div class="unit-panel" id="unit5">
+<div class="layout">
+
+  <aside class="panel toc">
+    <h4>On this page</h4>
+    <ol>
+      <li><a href="#graph-intro">Graphs</a></li>
+      <li><a href="#graph-terms">Graph Terminology</a></li>
+      <li><a href="#graph-types">Types of Graphs</a></li>
+      <li><a href="#graph-rep">Graph Representations</a></li>
+      <li><a href="#transitive">Path / Transitive Closure</a></li>
+      <li><a href="#warshall">Warshall's Algorithm</a></li>
+      <li><a href="#traversals">Graph Traversals</a></li>
+      <li><a href="#dijkstra">Dijkstra's Algorithm</a></li>
+      <li><a href="#components">Connected Components</a></li>
+      <li><a href="#spanning">Spanning Trees</a></li>
+      <li><a href="#mst">Minimum Cost Spanning Tree</a></li>
+    </ol>
+  </aside>
+
+  <div class="content">
+
+    <section class="panel" id="graph-intro">
+      <h2><span class="unit-tag">GRAPH</span> Introduction</h2>
+
+      <p>A Graph is a non-linear data structure consisting of vertices (nodes) and edges (connections).</p>
+
+<pre><code>
+A ---- B
+|      |
+|      |
+C ---- D
+</code></pre>
+
+      <div class="note-box">
+        <p><strong>Real-Life Example:</strong> Facebook friends, Google Maps routes, flight networks, and computer networks can all be represented using graphs.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="graph-terms">
+      <h2><span class="unit-tag">GRAPH</span> Terminology</h2>
+
+      <ul>
+        <li><strong>Vertex:</strong> A node in a graph.</li>
+        <li><strong>Edge:</strong> Connection between two vertices.</li>
+        <li><strong>Degree:</strong> Number of edges connected to a vertex.</li>
+        <li><strong>Path:</strong> Sequence of connected vertices.</li>
+        <li><strong>Cycle:</strong> Path that starts and ends at same vertex.</li>
+      </ul>
+
+<pre><code>
+A ---- B
+|
+|
+C
+</code></pre>
+
+      <p>Degree(A) = 2</p>
+    </section>
+
+    <section class="panel" id="graph-types">
+      <h2><span class="unit-tag">GRAPH</span> Types of Graphs</h2>
+
+      <h3>Undirected Graph</h3>
+<pre><code>A ----- B</code></pre>
+
+      <h3>Directed Graph</h3>
+<pre><code>A → B</code></pre>
+
+      <h3>Weighted Graph</h3>
+<pre><code>A --5-- B</code></pre>
+
+      <h3>Connected Graph</h3>
+<pre><code>A -- B -- C -- D</code></pre>
+
+      <h3>Disconnected Graph</h3>
+<pre><code>
+A -- B
+
+C -- D
+</code></pre>
+    </section>
+
+    <section class="panel" id="graph-rep">
+      <h2><span class="unit-tag">GRAPH</span> Representations</h2>
+
+      <h3>Adjacency Matrix</h3>
+
+      <table>
+        <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+        <tr><td>A</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+        <tr><td>B</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+        <tr><td>C</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+        <tr><td>D</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+      </table>
+
+      <h3>Adjacency List</h3>
+
+<pre><code>
+A → B → C
+B → A → D
+C → A → D
+D → B → C
+</code></pre>
+
+    </section>
+
+    <section class="panel" id="transitive">
+      <h2><span class="unit-tag">GRAPH</span> Path / Transitive Closure</h2>
+
+      <p>Transitive Closure determines whether one vertex can reach another.</p>
+
+<pre><code>
+A → B
+B → C
+
+Therefore
+
+A → C
+</code></pre>
+
+    </section>
+
+    <section class="panel" id="warshall">
+      <h2><span class="unit-tag">GRAPH</span> Warshall's Algorithm</h2>
+
+      <p>Warshall's Algorithm is used to find the transitive closure of a graph.</p>
+
+      <div class="note-box">
+        <p>If A can reach B and B can reach C, then A can reach C.</p>
+      </div>
+
+      <div class="complexity-grid">
+        <div class="complexity-card">
+          <div class="label">Complexity</div>
+          <div class="value">O(n³)</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="traversals">
+      <h2><span class="unit-tag">GRAPH</span> Graph Traversals</h2>
+
+      <h3>Breadth First Search (BFS)</h3>
+
+      <p>Uses Queue and visits nodes level by level.</p>
+
+<pre><code>
+      A
+    /   \
+   B     C
+  / \   /
+ D   E F
+
+Traversal:
+A B C D E F
+</code></pre>
+
+      <h3>Depth First Search (DFS)</h3>
+
+      <p>Uses Stack and explores deeply before backtracking.</p>
+
+<pre><code>
+      A
+    /   \
+   B     C
+  / \   /
+ D   E F
+
+Traversal:
+A B D E C F
+</code></pre>
+
+    </section>
+
+    <section class="panel" id="dijkstra">
+      <h2><span class="unit-tag">GRAPH</span> Dijkstra's Algorithm</h2>
+
+      <p>Used to find shortest paths from a source vertex.</p>
+
+<pre><code>
+A --4-- B
+|       |
+2       5
+|       |
+C --1-- D
+</code></pre>
+
+      <ul>
+        <li>A = 0</li>
+        <li>B = 4</li>
+        <li>C = 2</li>
+        <li>D = 3</li>
+      </ul>
+
+      <div class="note-box">
+        <p><strong>Applications:</strong> GPS Navigation, Google Maps, Network Routing.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="components">
+      <h2><span class="unit-tag">GRAPH</span> Connected Components</h2>
+
+<pre><code>
+A -- B -- C
+
+D -- E
+
+F
+</code></pre>
+
+      <p>Connected Components:</p>
+
+      <ul>
+        <li>{A,B,C}</li>
+        <li>{D,E}</li>
+        <li>{F}</li>
+      </ul>
+    </section>
+
+    <section class="panel" id="spanning">
+      <h2><span class="unit-tag">GRAPH</span> Spanning Trees</h2>
+
+      <p>A spanning tree connects all vertices without cycles.</p>
+
+<pre><code>
+A -- B
+|
+C -- D
+</code></pre>
+
+      <p><strong>Property:</strong> Number of edges = V - 1</p>
+    </section>
+
+    <section class="panel" id="mst">
+      <h2><span class="unit-tag">GRAPH</span> Minimum Cost Spanning Tree (MST)</h2>
+
+<pre><code>
+     4
+A ------- B
+| \       |
+2  \5     3
+|   \     |
+|    \    |
+C ------- D
+      1
+</code></pre>
+
+      <p>MST Selected Edges:</p>
+
+<pre><code>
+A -- C (2)
+C -- D (1)
+D -- B (3)
+
+Total Cost = 6
+</code></pre>
+
+      <div class="note-box">
+        <p><strong>Applications:</strong> Telephone Networks, Railway Networks, Internet Cabling, Electrical Networks.</p>
+      </div>
+    </section>
+
+    <div style="text-align:center; margin-top:10px;">
+      <a href="Datastructures.html" class="btn">← Back to Units</a>
+      <a href="DatastructuresLab.html" class="btn">Practice in Lab →</a>
     </div>
+
   </div>
+</div>
+</div>
+<!-- =================== END UNIT 5 =================== -->
 
 </main>
 
