@@ -1402,13 +1402,474 @@ rear  = (rear + 1) mod MAX      // after enqueue</code></pre>
   </div>
   </div>
   <!-- =================== END UNIT 2 =================== -->
+  <!-- ===================== UNIT 3 ===================== -->
   <div class="unit-panel" id="unit3">
-    <div class="panel coming-soon">
-      <span class="eyebrow">Unit 3</span>
-      <h3>Notes coming soon</h3>
-      <p>Unit 3 notes are being prepared and will appear here once ready.</p>
+  <div class="layout">
+
+    <!-- Table of Contents -->
+    <aside class="panel toc">
+      <h4>On this page</h4>
+      <ol>
+        <li><a href="#sll-rep">Singly Linked List: Representation &amp; Implementation</a></li>
+        <li><a href="#sll-traverse-search">Traversing &amp; Searching a Linked List</a></li>
+        <li><a href="#sll-insert-delete">Insertion &amp; Deletion</a></li>
+        <li><a href="#dll">Doubly Linked List</a></li>
+        <li><a href="#cdll">Circular Doubly Linked List</a></li>
+        <li><a href="#priority-queue-ll">Priority Queue Using Linked List</a></li>
+        <li><a href="#polynomial-ll">Polynomial Representation &amp; Addition</a></li>
+      </ol>
+    </aside>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- 1. Singly Linked List representation -->
+      <section class="panel" id="sll-rep">
+        <h2><span class="unit-tag">LINKED LIST</span> Singly Linked List: Representation &amp; Implementation</h2>
+        <p>A <strong>linked list</strong> is a linear data structure where each element
+          (called a <strong>node</strong>) stores its data <em>and</em> a pointer/reference to
+          the next node. Unlike arrays, the nodes are not stored in contiguous memory — they are
+          scattered, and connected only through these pointers.</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> think of a treasure hunt — each clue (node)
+            tells you where to go next. You don't need to know where all the clues are stored;
+            you just follow the trail from one to the next.</p>
+        </div>
+
+        <h3>Node Structure</h3>
+        <pre><code>struct Node {
+    int data;
+    Node* next;     // pointer/address of the next node
+};
+
+Node* head = NULL;   // head points to the first node; NULL means empty list</code></pre>
+
+        <p>A <strong>singly</strong> linked list means each node has only <em>one</em> link —
+          pointing forward to the next node. You can only move forward, never backward.</p>
+
+        <h3>Diagram</h3>
+        <pre><code>head
+ |
+ v
+[10|next] -> [20|next] -> [30|next] -> NULL</code></pre>
+
+        <h3>Creating a Node</h3>
+        <pre><code>function createNode(value):
+    newNode = allocate memory for Node
+    newNode.data = value
+    newNode.next = NULL
+    return newNode</code></pre>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Access by index</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Insert at head</div><div class="value">O(1)</div></div>
+          <div class="complexity-card"><div class="label">Insert at tail</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(n)</div></div>
+        </div>
+      </section>
+
+      <!-- 2. Traversing and Searching -->
+      <section class="panel" id="sll-traverse-search">
+        <h2><span class="unit-tag">LINKED LIST</span> Traversing &amp; Searching</h2>
+
+        <h3>Traversal</h3>
+        <p><strong>Traversing</strong> means visiting every node in the list, one by one,
+          starting from <span class="inline-code">head</span> and following
+          <span class="inline-code">next</span> pointers until you reach
+          <span class="inline-code">NULL</span>.</p>
+        <pre><code>function traverse(head):
+    current = head
+    while current != NULL:
+        print current.data
+        current = current.next</code></pre>
+
+        <h3>Worked Example</h3>
+        <p>Given the list <span class="inline-code">10 -> 20 -> 30 -> NULL</span>:</p>
+        <table>
+          <tr><th>Step</th><th>current</th><th>Action</th></tr>
+          <tr><td>1</td><td>points to node 10</td><td>print 10, move to next</td></tr>
+          <tr><td>2</td><td>points to node 20</td><td>print 20, move to next</td></tr>
+          <tr><td>3</td><td>points to node 30</td><td>print 30, move to next</td></tr>
+          <tr><td>4</td><td>NULL</td><td>stop — end of list reached</td></tr>
+        </table>
+
+        <h3>Searching</h3>
+        <p>To search for a value, traverse the list and compare each node's data with the target
+          value. Stop as soon as a match is found (or you reach the end without a match).</p>
+        <pre><code>function search(head, key):
+    current = head
+    position = 0
+    while current != NULL:
+        if current.data == key:
+            return position    // found!
+        current = current.next
+        position = position + 1
+    return -1    // not found</code></pre>
+
+        <div class="note-box">
+          <p><strong>Student tip:</strong> unlike arrays, you <em>cannot</em> jump directly to
+            "the 5th node" — you must walk through the list one node at a time starting from the
+            head. That's why search and access are both O(n).</p>
+        </div>
+      </section>
+
+      <!-- 3. Insertion and Deletion -->
+      <section class="panel" id="sll-insert-delete">
+        <h2><span class="unit-tag">LINKED LIST</span> Insertion &amp; Deletion</h2>
+
+        <h3>Insertion at the Beginning</h3>
+        <pre><code>function insertAtBeginning(head, value):
+    newNode = createNode(value)
+    newNode.next = head
+    head = newNode
+    return head</code></pre>
+        <p>Example: inserting <span class="inline-code">5</span> before
+          <span class="inline-code">10 -> 20 -> NULL</span> gives
+          <span class="inline-code">5 -> 10 -> 20 -> NULL</span>. Only the new node's pointer and
+          <span class="inline-code">head</span> change — nothing needs to "shift", unlike an
+          array.</p>
+
+        <h3>Insertion at the End</h3>
+        <pre><code>function insertAtEnd(head, value):
+    newNode = createNode(value)
+    if head == NULL:
+        return newNode
+    current = head
+    while current.next != NULL:
+        current = current.next
+    current.next = newNode
+    return head</code></pre>
+
+        <h3>Insertion at a Given Position</h3>
+        <pre><code>function insertAtPosition(head, value, pos):
+    if pos == 0:
+        return insertAtBeginning(head, value)
+    newNode = createNode(value)
+    current = head
+    for i from 0 to pos - 2:
+        current = current.next
+    newNode.next = current.next
+    current.next = newNode
+    return head</code></pre>
+
+        <h3>Deletion of a Node (by value)</h3>
+        <pre><code>function deleteNode(head, key):
+    if head == NULL:
+        return head
+    if head.data == key:        // deleting the first node
+        temp = head
+        head = head.next
+        free(temp)
+        return head
+
+    current = head
+    while current.next != NULL and current.next.data != key:
+        current = current.next
+
+    if current.next != NULL:    // node found
+        temp = current.next
+        current.next = current.next.next
+        free(temp)
+
+    return head</code></pre>
+
+        <h3>Worked Example — Delete 20 from 10 → 20 → 30</h3>
+        <table>
+          <tr><th>Step</th><th>Action</th><th>List after step</th></tr>
+          <tr><td>1</td><td>head.data (10) ≠ 20, so move current to node 10</td><td>10 → 20 → 30</td></tr>
+          <tr><td>2</td><td>current.next.data (20) == key, found!</td><td>10 → 20 → 30</td></tr>
+          <tr><td>3</td><td>current.next = current.next.next (skip node 20)</td><td>10 → 30</td></tr>
+        </table>
+        <p>Notice that node 20 is "skipped over" by simply changing one pointer — its memory is
+          then freed. No elements need to be shifted, unlike deleting from the middle of an
+          array.</p>
+      </section>
+
+      <!-- 4. Doubly Linked List -->
+      <section class="panel" id="dll">
+        <h2><span class="unit-tag">LINKED LIST</span> Doubly Linked List</h2>
+        <p>A <strong>doubly linked list (DLL)</strong> is like a singly linked list, but each
+          node has <em>two</em> pointers: one to the next node and one to the previous node. This
+          lets you traverse the list in <strong>both directions</strong>.</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> think of a train of coaches — from any coach you
+            can walk forward to the next coach <em>or</em> backward to the previous one, because
+            each coach is coupled on both sides.</p>
+        </div>
+
+        <h3>Node Structure</h3>
+        <pre><code>struct Node {
+    int data;
+    Node* prev;     // pointer to previous node
+    Node* next;     // pointer to next node
+};</code></pre>
+
+        <h3>Diagram</h3>
+        <pre><code>NULL <- [10|prev|next] <-> [20|prev|next] <-> [30|prev|next] -> NULL
+             ^
+           head</code></pre>
+
+        <h3>Insertion at the Beginning</h3>
+        <pre><code>function insertAtBeginning(head, value):
+    newNode = createNode(value)
+    newNode.next = head
+    newNode.prev = NULL
+    if head != NULL:
+        head.prev = newNode
+    head = newNode
+    return head</code></pre>
+
+        <h3>Deletion of a Node</h3>
+        <pre><code>function deleteNode(head, target):
+    if target.prev != NULL:
+        target.prev.next = target.next
+    else:
+        head = target.next      // deleting the first node
+
+    if target.next != NULL:
+        target.next.prev = target.prev
+
+    free(target)
+    return head</code></pre>
+
+        <table>
+          <tr><th>Feature</th><th>Singly Linked List</th><th>Doubly Linked List</th></tr>
+          <tr><td>Pointers per node</td><td>1 (next)</td><td>2 (prev, next)</td></tr>
+          <tr><td>Traversal direction</td><td>Forward only</td><td>Forward and backward</td></tr>
+          <tr><td>Memory used</td><td>Less</td><td>More (extra pointer)</td></tr>
+          <tr><td>Deletion given only a node pointer</td><td>Need previous node too</td><td>Easy — prev is already stored</td></tr>
+        </table>
+      </section>
+
+      <!-- 5. Circular Doubly Linked List -->
+      <section class="panel" id="cdll">
+        <h2><span class="unit-tag">LINKED LIST</span> Circular Doubly Linked List</h2>
+        <p>A <strong>circular doubly linked list (CDLL)</strong> is a doubly linked list where
+          the <span class="inline-code">next</span> pointer of the last node points back to the
+          first node, and the <span class="inline-code">prev</span> pointer of the first node
+          points to the last node — forming a closed loop in both directions.</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> a circular dinner table — you can pass a dish to
+            the person on your right or your left, and going around enough times in either
+            direction always brings you back to where you started.</p>
+        </div>
+
+        <h3>Diagram</h3>
+        <pre><code>      +-----------------------------------------+
+      |                                         |
+      v                                         |
+    [10|prev|next] <-> [20|prev|next] <-> [30|prev|next]
+      ^                                         |
+      |                                         |
+      +-----------------------------------------+
+                     (head points to node 10)</code></pre>
+
+        <h3>Key Differences from a Plain DLL</h3>
+        <ul>
+          <li>No node's pointer is ever <span class="inline-code">NULL</span> — the list has no
+            "true" start or end while traversing.</li>
+          <li>To detect when traversal has completed one full loop, compare the current pointer
+            back to <span class="inline-code">head</span> instead of checking for
+            <span class="inline-code">NULL</span>.</li>
+        </ul>
+
+        <h3>Traversal (forward, full loop)</h3>
+        <pre><code>function traverse(head):
+    if head == NULL:
+        return
+    current = head
+    do:
+        print current.data
+        current = current.next
+    while current != head</code></pre>
+
+        <h3>Insertion at the End</h3>
+        <pre><code>function insertAtEnd(head, value):
+    newNode = createNode(value)
+    if head == NULL:
+        newNode.next = newNode
+        newNode.prev = newNode
+        return newNode
+
+    last = head.prev          // last node, since head.prev always = last node
+    last.next = newNode
+    newNode.prev = last
+    newNode.next = head
+    head.prev = newNode
+    return head</code></pre>
+
+        <div class="warn-box">
+          <p><strong>Common mistake:</strong> using a plain <span class="inline-code">while current != NULL</span>
+            loop on a circular list — since no pointer is ever NULL, this causes an
+            <em>infinite loop</em>. Always compare against <span class="inline-code">head</span>
+            instead.</p>
+        </div>
+      </section>
+
+      <!-- 6. Priority Queue using Linked List -->
+      <section class="panel" id="priority-queue-ll">
+        <h2><span class="unit-tag">APPLICATION</span> Implementing Priority Queue Using Linked List</h2>
+        <p>A <strong>priority queue</strong> is a queue where each element has a
+          <strong>priority</strong>, and the element with the highest priority is removed first
+          — regardless of the order it was inserted (unlike a normal FIFO queue).</p>
+
+        <div class="note-box">
+          <p><strong>Everyday example:</strong> an emergency room — patients are treated by how
+            critical their condition is, not by who arrived first. A patient with a heart attack
+            is seen before someone who arrived earlier with a minor cut.</p>
+        </div>
+
+        <h3>Idea Using a Linked List</h3>
+        <p>Keep the linked list always sorted by priority. Every new node is inserted at the
+          correct position so the list stays sorted — the head is always the highest-priority
+          element, ready to be removed in O(1) time.</p>
+
+        <pre><code>struct Node {
+    int data;
+    int priority;     // lower number = higher priority (1 = most urgent)
+    Node* next;
+};</code></pre>
+
+        <h3>Insertion (Keeping List Sorted by Priority)</h3>
+        <pre><code>function insert(head, value, priority):
+    newNode = createNode(value, priority)
+
+    if head == NULL or priority < head.priority:
+        newNode.next = head
+        return newNode          // becomes new head
+
+    current = head
+    while current.next != NULL and current.next.priority <= priority:
+        current = current.next
+
+    newNode.next = current.next
+    current.next = newNode
+    return head</code></pre>
+
+        <h3>Deletion (Always Remove the Head)</h3>
+        <pre><code>function deleteHighestPriority(head):
+    if head == NULL:
+        print "Queue Empty"
+        return head
+    temp = head
+    head = head.next
+    print "Removed:", temp.data
+    free(temp)
+    return head</code></pre>
+
+        <h3>Worked Example</h3>
+        <p>Insert patients with priority 1 = most urgent:</p>
+        <table>
+          <tr><th>Operation</th><th>List (head → tail), shown as data(priority)</th></tr>
+          <tr><td>insert(Anil, 3)</td><td>Anil(3)</td></tr>
+          <tr><td>insert(Bala, 1)</td><td>Bala(1) → Anil(3)</td></tr>
+          <tr><td>insert(Chitra, 2)</td><td>Bala(1) → Chitra(2) → Anil(3)</td></tr>
+          <tr><td>deleteHighestPriority() → Bala</td><td>Chitra(2) → Anil(3)</td></tr>
+        </table>
+        <p>Even though Anil was inserted first and Bala was inserted second, Bala (priority 1) is
+          treated first because the list is always kept sorted by priority.</p>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Insert</div><div class="value">O(n)</div></div>
+          <div class="complexity-card"><div class="label">Delete (highest)</div><div class="value">O(1)</div></div>
+        </div>
+      </section>
+
+      <!-- 7. Polynomial representation and addition -->
+      <section class="panel" id="polynomial-ll">
+        <h2><span class="unit-tag">APPLICATION</span> Polynomial Representation Using Linked Lists &amp; Addition</h2>
+        <p>A polynomial like <span class="inline-code">4x³ + 3x² + 2x + 5</span> can be
+          represented as a linked list where each node stores one term: its
+          <strong>coefficient</strong> and <strong>exponent</strong>. Terms are usually kept in
+          decreasing order of exponent.</p>
+
+        <h3>Node Structure</h3>
+        <pre><code>struct Node {
+    int coefficient;
+    int exponent;
+    Node* next;
+};</code></pre>
+
+        <h3>Diagram — Representing 4x³ + 3x² + 2x + 5</h3>
+        <pre><code>[coeff=4|exp=3] -> [coeff=3|exp=2] -> [coeff=2|exp=1] -> [coeff=5|exp=0] -> NULL</code></pre>
+
+        <div class="note-box">
+          <p><strong>Student tip:</strong> the constant term <span class="inline-code">5</span>
+            is stored as <span class="inline-code">coefficient = 5, exponent = 0</span>, because
+            any number can be written as <span class="inline-code">5x⁰</span> (since
+            <span class="inline-code">x⁰ = 1</span>).</p>
+        </div>
+
+        <h3>Adding Two Polynomials</h3>
+        <p>To add two polynomials, walk through both lists together (similar to merging two
+          sorted lists):</p>
+        <ul>
+          <li>If the exponents of the current nodes in both lists are <strong>equal</strong>, add
+            their coefficients and create one node with that exponent.</li>
+          <li>If one exponent is <strong>larger</strong>, copy that term as-is into the result and
+            move forward only in that list.</li>
+          <li>Continue until both lists are fully traversed.</li>
+        </ul>
+
+        <pre><code>function addPolynomials(poly1, poly2):
+    result = NULL   // head of result list
+    p1 = poly1
+    p2 = poly2
+
+    while p1 != NULL and p2 != NULL:
+        if p1.exponent == p2.exponent:
+            insertTerm(result, p1.coefficient + p2.coefficient, p1.exponent)
+            p1 = p1.next
+            p2 = p2.next
+        else if p1.exponent > p2.exponent:
+            insertTerm(result, p1.coefficient, p1.exponent)
+            p1 = p1.next
+        else:
+            insertTerm(result, p2.coefficient, p2.exponent)
+            p2 = p2.next
+
+    // copy any remaining terms from whichever list isn't finished
+    while p1 != NULL:
+        insertTerm(result, p1.coefficient, p1.exponent)
+        p1 = p1.next
+    while p2 != NULL:
+        insertTerm(result, p2.coefficient, p2.exponent)
+        p2 = p2.next
+
+    return result</code></pre>
+
+        <h3>Worked Example</h3>
+        <p>Add <span class="inline-code">P1 = 4x³ + 3x² + 5</span> and
+          <span class="inline-code">P2 = 5x² + 2x + 1</span>:</p>
+        <table>
+          <tr><th>Step</th><th>Compare</th><th>Action</th><th>Result so far</th></tr>
+          <tr><td>1</td><td>x³ (P1) vs x² (P2)</td><td>P1's exponent is bigger → copy 4x³</td><td>4x³</td></tr>
+          <tr><td>2</td><td>x² (P1) vs x² (P2)</td><td>Same exponent → add coefficients: 3+5=8</td><td>4x³ + 8x²</td></tr>
+          <tr><td>3</td><td>x⁰ (P1) vs x¹ (P2)</td><td>P2's exponent is bigger → copy 2x</td><td>4x³ + 8x² + 2x</td></tr>
+          <tr><td>4</td><td>x⁰ (P1) vs x⁰ (P2)</td><td>Same exponent → add coefficients: 5+1=6</td><td>4x³ + 8x² + 2x + 6</td></tr>
+        </table>
+        <p>Final result: <strong>4x³ + 8x² + 2x + 6</strong>.</p>
+
+        <div class="complexity-grid">
+          <div class="complexity-card"><div class="label">Addition</div><div class="value">O(m + n)</div></div>
+          <div class="complexity-card"><div class="label">Space</div><div class="value">O(m + n)</div></div>
+        </div>
+        <p>where <em>m</em> and <em>n</em> are the number of terms in each polynomial — every term
+          is visited at most once.</p>
+      </section>
+
+      <div style="text-align:center; margin-top:10px;">
+        <a href="Datastructures.html" class="btn">← Back to Units</a>
+        <a href="DatastructuresLab.html" class="btn">Practice in Lab →</a>
+      </div>
+
     </div>
   </div>
+  </div>
+  <!-- =================== END UNIT 3 =================== -->
   <div class="unit-panel" id="unit4">
     <div class="panel coming-soon">
       <span class="eyebrow">Unit 4</span>
